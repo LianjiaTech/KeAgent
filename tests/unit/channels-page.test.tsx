@@ -7,7 +7,7 @@ const subscribeHostEventMock = vi.fn();
 
 const { gatewayState } = vi.hoisted(() => ({
   gatewayState: {
-    status: { state: 'running', port: 18789 },
+    status: { state: 'running', port: 18800 },
   },
 }));
 
@@ -40,7 +40,7 @@ vi.mock('sonner', () => ({
 describe('Channels page status refresh', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    gatewayState.status = { state: 'running', port: 18789 };
+    gatewayState.status = { state: 'running', port: 18800 };
     hostApiFetchMock.mockImplementation(async (path: string) => {
       if (path === '/api/channels/accounts') {
         return {
@@ -105,7 +105,7 @@ describe('Channels page status refresh', () => {
   });
 
   it('refetches when the gateway transitions to running after mount', async () => {
-    gatewayState.status = { state: 'starting', port: 18789 };
+    gatewayState.status = { state: 'starting', port: 18800 };
 
     const { rerender } = render(<Channels />);
 
@@ -114,7 +114,7 @@ describe('Channels page status refresh', () => {
       expect(hostApiFetchMock).toHaveBeenCalledWith('/api/agents');
     });
 
-    gatewayState.status = { state: 'running', port: 18789 };
+    gatewayState.status = { state: 'running', port: 18800 };
     await act(async () => {
       rerender(<Channels />);
     });

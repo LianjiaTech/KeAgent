@@ -1798,7 +1798,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       || resolvedState === 'error' || resolvedState === 'aborted';
     if (hasUsefulData) {
       clearHistoryPoll();
-      // Adopt run started from another client (e.g. console at 127.0.0.1:18789):
+      // Adopt run started from another client (e.g. console at 127.0.0.1:18800):
       // show loading/streaming in the app when this session has an active run.
       const { sending } = get();
       if (!sending && runId) {

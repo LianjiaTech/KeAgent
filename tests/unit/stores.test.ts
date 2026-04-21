@@ -108,7 +108,7 @@ describe('Gateway Store', () => {
 
   it('should update status', () => {
     const { setStatus } = useGatewayStore.getState();
-    setStatus({ state: 'running', port: 18789, pid: 12345 });
+    setStatus({ state: 'running', port: 18800, pid: 12345 });
 
     const state = useGatewayStore.getState();
     expect(state.status.state).toBe('running');

@@ -9,7 +9,7 @@ const fetchAgentsMock = vi.fn();
 
 const { gatewayState, agentsState } = vi.hoisted(() => ({
   gatewayState: {
-    status: { state: 'running', port: 18789 },
+    status: { state: 'running', port: 18800 },
   },
   agentsState: {
     agents: [] as Array<Record<string, unknown>>,
@@ -63,7 +63,7 @@ vi.mock('sonner', () => ({
 describe('Agents page status refresh', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    gatewayState.status = { state: 'running', port: 18789 };
+    gatewayState.status = { state: 'running', port: 18800 };
     fetchAgentsMock.mockResolvedValue(undefined);
     hostApiFetchMock.mockResolvedValue({
       success: true,
@@ -99,7 +99,7 @@ describe('Agents page status refresh', () => {
   });
 
   it('refetches channel accounts when the gateway transitions to running after mount', async () => {
-    gatewayState.status = { state: 'starting', port: 18789 };
+    gatewayState.status = { state: 'starting', port: 18800 };
 
     const { rerender } = render(<Agents />);
 
@@ -108,7 +108,7 @@ describe('Agents page status refresh', () => {
       expect(hostApiFetchMock).toHaveBeenCalledWith('/api/channels/accounts');
     });
 
-    gatewayState.status = { state: 'running', port: 18789 };
+    gatewayState.status = { state: 'running', port: 18800 };
     await act(async () => {
       rerender(<Agents />);
     });

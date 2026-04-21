@@ -220,8 +220,8 @@ KeAgent adopts a **dual-process + Host API unified access architecture**. The re
 - Single-instance protection uses both Electron's built-in lock and local process file lock fallback, which can avoid duplicate launches when desktop session bus is abnormal.
 - During rolling upgrades, if old and new versions mix, single-instance protection may still exhibit asymmetric behavior. For stability, it's recommended to uniformly upgrade the desktop client to the same version.
 - Use the following commands to confirm listening processes:
-  - macOS/Linux: `lsof -nP -iTCP:18789 -sTCP:LISTEN`
-  - Windows (PowerShell): `Get-NetTCPConnection -LocalPort 18789 -State Listen`
+  - macOS/Linux: `lsof -nP -iTCP:18800 -sTCP:LISTEN`
+  - Windows (PowerShell): `Get-NetTCPConnection -LocalPort 18800 -State Listen`
 - Clicking the window close button (`X`) defaults to minimizing to tray and does not fully exit the application. Please select **Quit KeAgent** from the tray menu for a complete exit.
 
 ---
