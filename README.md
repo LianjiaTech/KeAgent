@@ -39,7 +39,7 @@
 
 ## 💬 WeChat Community
 
-WeChat ID: **wantongtang** (add as friend to be invited to the group)
+WeChat ID: **wantongtang** / **Thinkre** (add as friend to be invited to the group)
 
 
 ## 📸 Screenshots
