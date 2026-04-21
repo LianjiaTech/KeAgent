@@ -189,7 +189,7 @@ export function createMenu(): void {
         {
           label: 'OpenClaw Documentation',
           click: async () => {
-            await shell.openExternal('https://docs.openclaw.ai');
+            await shell.openExternal('https://docs.keagent.ai');
           },
         },
       ],

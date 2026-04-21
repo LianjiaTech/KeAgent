@@ -152,7 +152,7 @@ describe('agent config lifecycle', () => {
     const test2WorkspaceDir = join(testHome, '.keagent', 'workspace-test2');
     await mkdir(join(test2RuntimeDir, 'agent'), { recursive: true });
     await mkdir(join(test2RuntimeDir, 'sessions'), { recursive: true });
-    await mkdir(join(test2WorkspaceDir, '.openclaw'), { recursive: true });
+    await mkdir(join(test2WorkspaceDir, '.keagent'), { recursive: true });
     await writeFile(
       join(test2RuntimeDir, 'agent', 'auth-profiles.json'),
       JSON.stringify({ version: 1, profiles: {} }, null, 2),

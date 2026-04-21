@@ -51,7 +51,7 @@ export GITHUB_TOKEN="ghp_xxxxxxxxxxxxxxxxxxxx"
 **方法 B：写入配置文件**
 ```bash
 # 创建配置文件
-echo "GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx" > ~/.openclaw/github_token
+echo "GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx" > ~/.keagent/github_token
 ```
 
 ### 3. 测试配置

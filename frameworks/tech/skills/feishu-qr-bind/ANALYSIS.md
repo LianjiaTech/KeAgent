@@ -140,7 +140,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │ 5. 保存配置                                                   │
 ├─────────────────────────────────────────────────────────────┤
-│ 保存到 ~/.openclaw/openclaw.json:                           │
+│ 保存到 ~/.keagent/openclaw.json:                           │
 │ {                                                           │
 │   "channels": {                                             │
 │     "feishu": {                                             │
@@ -434,13 +434,13 @@ async function pollForResult(auth, deviceCode, beginRes) {
 ```javascript
 // 只处理 openclaw.json
 async function readConfig() {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   const content = await fs.readFile(configPath, 'utf-8');
   return JSON.parse(content);
 }
 
 async function saveConfig(appId, appSecret, domain = 'feishu') {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   const config = await readConfig();
   
   // 备份
@@ -738,7 +738,7 @@ feishu:
 ## 附录 B: 参考资源
 
 - 官方插件源码：`/home/ubuntu/.npm-global/lib/node_modules/@larksuite/openclaw-lark-tools/`
-- 现有 skill: `/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/`
+- 现有 skill: `/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/`
 - 飞书 OAuth 文档：https://open.feishu.cn/document/ukTMukTMukTM/ukDNz4SO0MjL5QzM/auth-v3/oauth2/oauth-code
 
 ---

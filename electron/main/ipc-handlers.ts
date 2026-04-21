@@ -873,7 +873,7 @@ function registerUnifiedRequestHandlers(gatewayManager: GatewayManager): void {
 
 /**
  * Skill config IPC handlers
- * Direct read/write to ~/.openclaw/openclaw.json (bypasses Gateway RPC)
+ * Direct read/write to ~/.keagent/openclaw.json (bypasses Gateway RPC)
  */
 function registerSkillConfigHandlers(): void {
   // Update skill config (apiKey and env)
@@ -1521,12 +1521,12 @@ function registerOpenClawHandlers(gatewayManager: GatewayManager): void {
     return getOpenClawDir();
   });
 
-  // Get the OpenClaw config directory (~/.openclaw)
+  // Get the OpenClaw config directory (~/.keagent)
   ipcMain.handle('openclaw:getConfigDir', () => {
     return getOpenClawConfigDir();
   });
 
-  // Get the OpenClaw skills directory (~/.openclaw/skills)
+  // Get the OpenClaw skills directory (~/.keagent/skills)
   ipcMain.handle('openclaw:getSkillsDir', () => {
     const dir = getOpenClawSkillsDir();
     ensureDir(dir);
@@ -2482,7 +2482,7 @@ async function generateImagePreview(filePath: string, mimeType: string): Promise
 
 /**
  * File staging IPC handlers
- * Stage files to ~/.openclaw/media/outbound/ for gateway access
+ * Stage files to ~/.keagent/media/outbound/ for gateway access
  */
 function registerFileHandlers(): void {
   // Stage files from real disk paths (used with dialog:open)
@@ -2619,7 +2619,7 @@ function registerFileHandlers(): void {
  *
  * Performs a soft-delete of a session's JSONL transcript on disk.
  * sessionKey format: "agent:<agentId>:<suffix>" — e.g. "agent:main:session-1234567890".
- * The JSONL file lives at: ~/.openclaw/agents/<agentId>/sessions/<suffix>.jsonl
+ * The JSONL file lives at: ~/.keagent/agents/<agentId>/sessions/<suffix>.jsonl
  * Renaming to <suffix>.deleted.jsonl hides it from sessions.list.
  */
 function registerSessionHandlers(): void {

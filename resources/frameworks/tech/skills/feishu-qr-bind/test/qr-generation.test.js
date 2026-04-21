@@ -49,7 +49,7 @@ test('QR Code 生成测试', async () => {
 });
 
 test('配置目录测试', async () => {
-  const configDir = path.join(process.env.HOME || process.env.USERPROFILE || '/tmp', '.openclaw');
+  const configDir = path.join(process.env.HOME || process.env.USERPROFILE || '/tmp', '.keagent');
   const configPath = path.join(configDir, 'config.yaml');
   
   // 测试目录是否可写

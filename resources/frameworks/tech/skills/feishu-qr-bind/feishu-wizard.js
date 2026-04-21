@@ -146,7 +146,7 @@ class FeishuAuth {
 // ============================================================================
 
 async function readConfig() {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   if (!await fs.pathExists(configPath)) {
     return { channels: { feishu: { defaultAccount: 'main', accounts: {} } } };
   }
@@ -158,7 +158,7 @@ async function readConfig() {
  * 保存配置（参考官方插件 gate.js 配置结构）
  */
 async function saveConfig(appId, appSecret, domain, accountName, groupPolicy = 'open', requireMention = false) {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   let config = await readConfig();
   
   // 备份

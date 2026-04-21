@@ -6,7 +6,7 @@
 
 **创建时间**: 2026-03-20  
 **版本**: 1.0.0  
-**位置**: `~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/`
+**位置**: `~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind/`
 
 ---
 
@@ -101,7 +101,7 @@
          ↓
 7. 用户扫码确认 → 获取 appId/appSecret
          ↓
-8. 保存配置 → ~/.openclaw/config.yaml
+8. 保存配置 → ~/.keagent/config.yaml
          ↓
 9. 返回结果
 ```
@@ -190,7 +190,7 @@ console.log(result);
 ### 单元测试
 
 ```bash
-cd ~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind
+cd ~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind
 node --test test/*.test.js
 ```
 
@@ -207,7 +207,7 @@ fail 0
 ### 模块加载测试
 
 ```bash
-cd ~/.openclaw/extensions/openclaw-lark
+cd ~/.keagent/extensions/openclaw-lark
 node -e "import('./skills/feishu-qr-bind/index.js')
   .then(m => console.log('✅ Skill loaded:', Object.keys(m)))"
 ```
@@ -222,7 +222,7 @@ node -e "import('./skills/feishu-qr-bind/index.js')
 ## 文件结构
 
 ```
-~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/
+~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind/
 │
 ├── SKILL.md                    # 技能规范文档
 ├── README.md                   # 使用说明
@@ -248,7 +248,7 @@ node -e "import('./skills/feishu-qr-bind/index.js')
 
 绑定成功后，配置自动保存到：
 ```yaml
-~/.openclaw/config.yaml
+~/.keagent/config.yaml
 
 feishu:
   appId: 'cli_xxxxxxxxxxxxxxxx'
@@ -305,7 +305,7 @@ config.yaml.backup.1710921352000
 
 2. **配置文件权限**
    ```bash
-   chmod 600 ~/.openclaw/config.yaml
+   chmod 600 ~/.keagent/config.yaml
    ```
 
 3. **网络要求**
@@ -356,10 +356,10 @@ config.yaml.backup.1710921352000
 
 ```bash
 # 实时日志
-tail -f ~/.openclaw/logs/openclaw.log
+tail -f ~/.keagent/logs/openclaw.log
 
 # 搜索绑定日志
-grep "feishu-qr-bind" ~/.openclaw/logs/openclaw.log
+grep "feishu-qr-bind" ~/.keagent/logs/openclaw.log
 ```
 
 ### 清理临时文件
@@ -369,13 +369,13 @@ grep "feishu-qr-bind" ~/.openclaw/logs/openclaw.log
 rm /tmp/openclaw/feishu_qr_*.png
 
 # 清理测试文件
-rm -rf ~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/test-output/
+rm -rf ~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind/test-output/
 ```
 
 ### 更新依赖
 
 ```bash
-cd ~/.openclaw/extensions/openclaw-lark
+cd ~/.keagent/extensions/openclaw-lark
 npm update qrcode fs-extra axios
 ```
 
@@ -383,7 +383,7 @@ npm update qrcode fs-extra axios
 
 ```bash
 # 删除技能
-rm -rf ~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/
+rm -rf ~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind/
 
 # 重新创建（从备份或源码）
 # ... 重新部署代码
@@ -440,7 +440,7 @@ rm -rf ~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/
 
 1. 查看 [README.md](./README.md) 故障排查章节
 2. 查看 [EXAMPLE.md](./EXAMPLE.md) 常见问题
-3. 检查日志 `~/.openclaw/logs/openclaw.log`
+3. 检查日志 `~/.keagent/logs/openclaw.log`
 4. 联系 OpenClaw 技术支持
 
 ### 贡献代码

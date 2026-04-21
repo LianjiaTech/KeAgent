@@ -120,7 +120,7 @@ if (result.success) {
 ### 步骤 4：获取结果
 
 授权成功后：
-- `app_id` 和 `app_secret` 会自动保存到 `~/.openclaw/config.yaml`
+- `app_id` 和 `app_secret` 会自动保存到 `~/.keagent/config.yaml`
 - 返回完整的绑定结果
 
 ## 返回结果
@@ -222,7 +222,7 @@ if (result.success) {
 ## 文件结构
 
 ```
-~/.openclaw/extensions/openclaw-lark/skills/feishu-qr-bind/
+~/.keagent/extensions/openclaw-lark/skills/feishu-qr-bind/
 ├── SKILL.md              # 技能文档（本文件）
 ├── README.md             # 使用说明
 ├── index.js              # 导出入口
@@ -232,7 +232,7 @@ if (result.success) {
 
 ## 配置文件
 
-绑定成功后，appId 和 appSecret 会保存到 `~/.openclaw/config.yaml`：
+绑定成功后，appId 和 appSecret 会保存到 `~/.keagent/config.yaml`：
 
 ```yaml
 feishu:
@@ -269,11 +269,11 @@ config.yaml.backup.1710921052000
 
 1. **检查权限**：确认飞书账号有创建应用的权限
 2. **企业白名单**：确认账号在企业授权范围内
-3. **查看日志**：检查 `~/.openclaw/logs/openclaw.log`
+3. **查看日志**：检查 `~/.keagent/logs/openclaw.log`
 
 ### 配置保存失败
 
-1. **检查权限**：确认有 `~/.openclaw/config.yaml` 的写权限
+1. **检查权限**：确认有 `~/.keagent/config.yaml` 的写权限
 2. **手动保存**：使用返回的 appId/appSecret 手动配置
 3. **检查路径**：确认 home 目录路径正确
 

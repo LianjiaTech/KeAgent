@@ -423,7 +423,7 @@ export function buildProviderEnvVars(
 
 /**
  * Update the OpenClaw config to use the given provider and model
- * Writes to ~/.openclaw/openclaw.json
+ * Writes to ~/.keagent/openclaw.json
  */
 export async function setOpenClawDefaultModel(
   provider: string,
@@ -805,7 +805,7 @@ export async function getOpenClawProvidersConfig(): Promise<{
 }
 
 /**
- * Write the ClawX gateway token into ~/.openclaw/openclaw.json.
+ * Write the ClawX gateway token into ~/.keagent/openclaw.json.
  */
 export async function syncGatewayTokenToConfig(token: string): Promise<void> {
   return withConfigLock(async () => {
@@ -853,7 +853,7 @@ export async function syncGatewayTokenToConfig(token: string): Promise<void> {
 }
 
 /**
- * Ensure browser automation is enabled in ~/.openclaw/openclaw.json.
+ * Ensure browser automation is enabled in ~/.keagent/openclaw.json.
  */
 export async function syncBrowserConfigToOpenClaw(): Promise<void> {
   return withConfigLock(async () => {
@@ -886,7 +886,7 @@ export async function syncBrowserConfigToOpenClaw(): Promise<void> {
 }
 
 /**
- * Ensure session idle-reset is configured in ~/.openclaw/openclaw.json.
+ * Ensure session idle-reset is configured in ~/.keagent/openclaw.json.
  *
  * By default OpenClaw resets the "main" session daily at 04:00 local time,
  * which means conversations disappear after roughly one day.  ClawX sets
@@ -988,7 +988,7 @@ export async function updateAgentModelProvider(
 }
 
 /**
- * Sanitize ~/.openclaw/openclaw.json before Gateway start.
+ * Sanitize ~/.keagent/openclaw.json before Gateway start.
  *
  * Removes known-invalid keys that cause OpenClaw's strict Zod validation
  * to reject the entire config on startup.  Uses a conservative **blocklist**

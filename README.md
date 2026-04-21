@@ -109,7 +109,7 @@ Known limitation: WeChat is currently not in the supported scheduled task delive
 
 ### 🧩 Extensible Skill System
 Expand AI agent capabilities through pre-built skills. Browse, install, and manage skills in the integrated skill panel—no package manager required.
-KeAgent also comes with complete document processing skills (`pdf`, `xlsx`, `docx`, `pptx`) pre-installed, automatically deployed to the hosted skill directory (default `~/.openclaw/skills`) at startup, and enabled by default during initial installation. Additional pre-installed skills (`find-skills`, `self-improving-agent`, `tavily-search`, `brave-web-search`) are also enabled by default; if required API Keys are missing, OpenClaw will provide configuration error prompts at runtime.  
+KeAgent also comes with complete document processing skills (`pdf`, `xlsx`, `docx`, `pptx`) pre-installed, automatically deployed to the hosted skill directory (default `~/.keagent/skills`) at startup, and enabled by default during initial installation. Additional pre-installed skills (`find-skills`, `self-improving-agent`, `tavily-search`, `brave-web-search`) are also enabled by default; if required API Keys are missing, OpenClaw will provide configuration error prompts at runtime.  
 The Skills page displays skills from multiple skill libraries (hosted directory, workspace, additional skill directories) and shows the actual path of each skill, making it easy to directly open the real installation location.
 
 Required environment variables for search skills:

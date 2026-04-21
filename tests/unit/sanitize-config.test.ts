@@ -3,7 +3,7 @@
  *
  * The sanitizeOpenClawConfig() function in openclaw-auth.ts relies on
  * Electron-specific helpers (readOpenClawJson / writeOpenClawJson) that
- * read from ~/.openclaw/openclaw.json.  To avoid mocking Electron + the
+ * read from ~/.keagent/openclaw.json.  To avoid mocking Electron + the
  * real HOME directory, this test uses a standalone version of the
  * sanitization logic that mirrors the production code exactly, operating
  * on a temp directory with real file I/O.

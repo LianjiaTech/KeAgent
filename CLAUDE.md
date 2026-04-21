@@ -81,13 +81,13 @@ pnpm package:linux
 
 ### OpenClaw Configuration
 
-The OpenClaw configuration is stored in `~/.openclaw/openclaw.json`. Key sections:
+The OpenClaw configuration is stored in `~/.keagent/openclaw.json`. Key sections:
 
 ```json
 {
   "agents": {
     "defaults": {
-      "workspace": "~/.openclaw/workspace",
+      "workspace": "~/.keagent/workspace",
       "model": "provider/model-name"
     },
     "list": [
@@ -95,8 +95,8 @@ The OpenClaw configuration is stored in `~/.openclaw/openclaw.json`. Key section
         "id": "main",
         "name": "Main Agent",
         "default": true,
-        "workspace": "~/.openclaw/workspace",
-        "agentDir": "~/.openclaw/agents/main/agent"
+        "workspace": "~/.keagent/workspace",
+        "agentDir": "~/.keagent/agents/main/agent"
       }
     ]
   },
@@ -147,8 +147,8 @@ Channels support multiple accounts per channel type:
 
 Skills are managed via the `clawhub` npm package:
 - Search/install from ClawHub registry
-- Installed to `~/.openclaw/skills/`
-- Tracked in `~/.openclaw/.clawhub/lock.json`
+- Installed to `~/.keagent/skills/`
+- Tracked in `~/.keagent/.clawhub/lock.json`
 
 ## Bundled Skills
 

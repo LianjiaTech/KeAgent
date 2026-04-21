@@ -146,7 +146,7 @@ class FeishuAuth {
  * 读取 OpenClaw 配置文件（只处理 openclaw.json）
  */
 async function readConfig() {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   
   if (!await fs.pathExists(configPath)) {
     return { channels: { feishu: { defaultAccount: 'main', accounts: {} } } };
@@ -166,7 +166,7 @@ async function readConfig() {
  * @param {boolean} requireMention - 群聊是否需要 @机器人
  */
 async function saveConfig(appId, appSecret, domain = 'feishu', accountName = null, groupPolicy = 'open', requireMention = false) {
-  const configPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const configPath = path.join(homedir(), '.keagent', 'openclaw.json');
   
   // 读取现有配置
   let config = await readConfig();

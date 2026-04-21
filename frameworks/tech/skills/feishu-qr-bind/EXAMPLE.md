@@ -59,7 +59,7 @@ async function main() {
     console.log('📱 二维码路径:', result.qr_path);
     console.log('🔑 App ID:', result.app_id);
     console.log('🔐 App Secret:', '***' + result.app_secret.slice(-8)); // 隐藏大部分
-    console.log('\n配置已保存到 ~/.openclaw/config.yaml');
+    console.log('\n配置已保存到 ~/.keagent/config.yaml');
   } else {
     console.error('\n❌ 绑定失败\n');
     console.error('错误:', result.error);
@@ -180,7 +180,7 @@ async function bindWithProgress() {
   console.log(`App ID:    ${result.app_id}`);
   console.log(`App Secret: ${'*'.repeat(result.app_secret.length)}`);
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('\n配置已自动保存到 ~/.openclaw/config.yaml');
+  console.log('\n配置已自动保存到 ~/.keagent/config.yaml');
 }
 
 bindWithProgress();
@@ -362,10 +362,10 @@ const result = await feishu_qr_bind({
 ls -lh /tmp/openclaw/feishu_qr_*.png
 
 # 查看配置文件
-cat ~/.openclaw/config.yaml
+cat ~/.keagent/config.yaml
 
 # 查看备份文件
-ls -lh ~/.openclaw/config.yaml.backup.*
+ls -lh ~/.keagent/config.yaml.backup.*
 ```
 
 ### 3. 测试网络连接
@@ -382,10 +382,10 @@ curl -I https://open.larksuite.com/oauth/v1/app/registration
 
 ```bash
 # 实时查看日志
-tail -f ~/.openclaw/logs/openclaw.log
+tail -f ~/.keagent/logs/openclaw.log
 
 # 搜索绑定相关日志
-grep "feishu-qr-bind" ~/.openclaw/logs/openclaw.log
+grep "feishu-qr-bind" ~/.keagent/logs/openclaw.log
 ```
 
 ## 常见问题
@@ -409,19 +409,19 @@ await feishu_qr_bind({ domain: 'lark' });
 ### Q: 配置保存到哪里了？
 
 A: 
-默认保存到 `~/.openclaw/config.yaml`
+默认保存到 `~/.keagent/config.yaml`
 
 ### Q: 如何查看已保存的配置？
 
 A: 
 ```bash
-cat ~/.openclaw/config.yaml | grep -A 5 "feishu:"
+cat ~/.keagent/config.yaml | grep -A 5 "feishu:"
 ```
 
 ### Q: 可以手动设置 appId/appSecret 吗？
 
 A: 
-可以，编辑 `~/.openclaw/config.yaml`:
+可以，编辑 `~/.keagent/config.yaml`:
 ```yaml
 feishu:
   appId: 'cli_xxxxxxxx'
