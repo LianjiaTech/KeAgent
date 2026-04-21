@@ -227,7 +227,7 @@ If one provider fails (rate limit, timeout, error), the skill automatically trie
 
 **Tavily, Serper, and Exa are NOT core OpenClaw providers.**
 
-❌ Don't modify `~/.openclaw/openclaw.json` for these  
+❌ Don't modify `~/.keagent/openclaw.json` for these  
 ✅ Use this skill's scripts — keys auto-load from `.env`
 
 ---

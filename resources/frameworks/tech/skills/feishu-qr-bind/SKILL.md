@@ -212,7 +212,7 @@ for (const agent of agents) {
 
 ## 配置结构
 
-保存后的配置（`~/.openclaw/openclaw.json`）：
+保存后的配置（`~/.keagent/openclaw.json`）：
 
 ```json
 {

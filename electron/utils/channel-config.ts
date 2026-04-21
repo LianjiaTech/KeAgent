@@ -35,7 +35,7 @@ const LEGACY_WECHAT_SYNC_DIR = join(
   'agents',
   'default',
   'sessions',
-  '.openclaw-weixin-sync'
+  '.keagent-weixin-sync'
 );
 
 // Channels that are managed as plugins (config goes under plugins.entries, not channels)

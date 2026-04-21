@@ -84,7 +84,7 @@ export async function unloadLaunchctlGatewayService(): Promise<void> {
     const uid = process.getuid?.();
     if (uid === undefined) return;
 
-    const launchdLabel = 'ai.openclaw.gateway';
+    const launchdLabel = 'ai.keagent.gateway';
     const serviceTarget = `gui/${uid}/${launchdLabel}`;
     const cp = await import('child_process');
     const fsPromises = await import('fs/promises');

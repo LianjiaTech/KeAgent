@@ -335,7 +335,7 @@ async function initialize(): Promise<void> {
   });
 
   // Pre-deploy built-in skills (feishu-doc, feishu-drive, feishu-perm, feishu-wiki)
-  // to ~/.openclaw/skills/ so they are immediately available without manual install.
+  // to ~/.keagent/skills/ so they are immediately available without manual install.
   void ensureBuiltinSkillsInstalled().catch((error) => {
     logger.warn('Failed to install built-in skills:', error);
   });
@@ -348,12 +348,12 @@ async function initialize(): Promise<void> {
   });
 
   // Pre-deploy/upgrade bundled OpenClaw plugins (dingtalk, wecom, qqbot, feishu, wechat)
-  // to ~/.openclaw/extensions/ so they are always up-to-date after an app update.
+  // to ~/.keagent/extensions/ so they are always up-to-date after an app update.
   void ensureAllBundledPluginsInstalled().catch((error) => {
     logger.warn('Failed to install/upgrade bundled plugins:', error);
   });
 
-  // Deploy ClawTeams agent frameworks (CEO, Tech, Writer, etc.) to ~/.openclaw/
+  // Deploy ClawTeams agent frameworks (CEO, Tech, Writer, etc.) to ~/.keagent/
   // This sets up multi-agent collaboration with proper workspace directories.
   void deployAgentFrameworks().catch((error) => {
     logger.warn('Failed to deploy agent frameworks:', error);

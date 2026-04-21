@@ -69,7 +69,7 @@ const MANIFEST_ID_FIXES: Record<string, string> = {
 };
 
 /**
- * After a plugin has been copied to ~/.openclaw/extensions/<dir>, fix any
+ * After a plugin has been copied to ~/.keagent/extensions/<dir>, fix any
  * known manifest-ID mismatches so the Gateway can load the plugin.
  * Also patches package.json fields that the Gateway uses as "entry hints".
  */
@@ -103,7 +103,7 @@ export function fixupPluginManifest(targetDir: string): void {
         pkg.name = pkg.name.replace(oldId, newId);
         modified = true;
       }
-      const install = pkg.openclaw?.install;
+      const install = pkg.keagent?.install;
       if (install) {
         if (typeof install.npmSpec === 'string' && install.npmSpec.includes(oldId)) {
           install.npmSpec = install.npmSpec.replace(oldId, newId);
@@ -564,7 +564,7 @@ const ALL_BUNDLED_PLUGINS = [
 
 /**
  * Ensure all bundled OpenClaw plugins are installed/upgraded in
- * `~/.openclaw/extensions/`.  Designed to be called once at app startup
+ * `~/.keagent/extensions/`.  Designed to be called once at app startup
  * as a fire-and-forget task — errors are logged but never thrown.
  */
 export async function ensureAllBundledPluginsInstalled(): Promise<void> {

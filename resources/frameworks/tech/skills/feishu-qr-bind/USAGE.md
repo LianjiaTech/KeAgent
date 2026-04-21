@@ -41,7 +41,7 @@ if (result.success) {
 ### 方式 2：命令行测试
 
 ```bash
-cd /home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind
+cd /home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind
 
 # 基本用法（生成二维码后在终端显示）
 node test-bind.js
@@ -65,7 +65,7 @@ node test-bind.js --timeout 900
   "mcp": {
     "tools": {
       "feishu_qr_bind": {
-        "path": "/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/feishu-qr-bind.js",
+        "path": "/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/feishu-qr-bind.js",
         "enabled": true
       }
     }
@@ -79,7 +79,7 @@ node test-bind.js --timeout 900
 |------|------|--------|------|
 | `domain` | string | `'feishu'` | 飞书域名：`feishu`（中国）或 `lark`（国际） |
 | `timeout` | number | `600` | 轮询超时时间（秒） |
-| `save_config` | boolean | `true` | 是否自动保存配置到 `~/.openclaw/openclaw.json` |
+| `save_config` | boolean | `true` | 是否自动保存配置到 `~/.keagent/openclaw.json` |
 | `send_to_feishu` | boolean | `false` | 是否通过飞书消息发送二维码图片 |
 | `user_open_id` | string | `null` | 接收者的飞书 open_id（`send_to_feishu=true` 时需要） |
 
@@ -176,7 +176,7 @@ node test-bind.js --timeout 900
 
 ## 配置文件位置
 
-配置保存到：`~/.openclaw/openclaw.json`
+配置保存到：`~/.keagent/openclaw.json`
 
 ```json
 {
@@ -231,6 +231,6 @@ node test-bind.js --timeout 900
 ## 技术支持
 
 - 问题反馈：GitHub Issues
-- 文档：/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/README.md
-- 分析报告：/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/ANALYSIS.md
-- 修复总结：/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/FIX_SUMMARY.md
+- 文档：/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/README.md
+- 分析报告：/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/ANALYSIS.md
+- 修复总结：/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/FIX_SUMMARY.md

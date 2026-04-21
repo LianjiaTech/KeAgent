@@ -15,7 +15,7 @@ import { homedir } from 'os';
 
 // 配置
 const FEISHU_OAUTH_BASE = 'https://accounts.feishu.cn';
-const CONFIG_PATH = path.join(homedir(), '.openclaw', 'openclaw.json');
+const CONFIG_PATH = path.join(homedir(), '.keagent', 'openclaw.json');
 
 /**
  * 读取配置
@@ -256,7 +256,7 @@ async function bindAgent(agentId, sendToFeishu = false, userOpenId = null) {
   await saveConfig(agentId, result.appId, result.appSecret, result.domain);
   
   console.log('\n🎉', agentId, 'agent 绑定成功！');
-  console.log('凭证已保存到 ~/.openclaw/openclaw.json');
+  console.log('凭证已保存到 ~/.keagent/openclaw.json');
   
   return result;
 }

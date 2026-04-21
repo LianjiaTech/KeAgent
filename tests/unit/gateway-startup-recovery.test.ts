@@ -8,7 +8,7 @@ import {
 describe('gateway startup recovery heuristics', () => {
   it('detects invalid-config signal from stderr lines', () => {
     const lines = [
-      'Invalid config at C:\\Users\\pc\\.openclaw\\openclaw.json:\\n- skills: Unrecognized key: "enabled"',
+      'Invalid config at C:\\Users\\pc\\.keagent\\openclaw.json:\\n- skills: Unrecognized key: "enabled"',
       'Run: openclaw doctor --fix',
     ];
     expect(hasInvalidConfigFailureSignal(new Error('gateway start failed'), lines)).toBe(true);

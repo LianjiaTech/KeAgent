@@ -24,7 +24,7 @@ echo "  - User:  ${USER_OPEN_ID}"
 echo ""
 
 # 检查技能目录
-SKILL_DIR="/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind"
+SKILL_DIR="/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind"
 if [ ! -d "$SKILL_DIR" ]; then
     echo -e "${RED}❌ 错误：技能目录不存在${NC}"
     echo "路径：$SKILL_DIR"

@@ -9,7 +9,7 @@
    - 核心文件：`dist/utils/feishu-auth.js`, `dist/utils/install-prompts.js`, `dist/commands/install.js`
 
 2. **查看现有 feishu-qr-bind skill**
-   - 位置：`/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/`
+   - 位置：`/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/`
    - 核心文件：`feishu-qr-bind.js`
 
 3. **理解飞书 OAuth Device Flow 流程**
@@ -21,7 +21,7 @@
    - ✅ 生成二维码 PNG 图片
    - ✅ 通过飞书消息发送给用户
    - ✅ 轮询等待扫码
-   - ✅ 保存配置到 ~/.openclaw/openclaw.json
+   - ✅ 保存配置到 ~/.keagent/openclaw.json
    - ✅ 绑定到指定 agent
 
 ---
@@ -136,7 +136,7 @@ feishu-qr-bind-fixed.js
 
 ### 步骤 1: 备份现有代码
 ```bash
-cd /home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind
+cd /home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind
 cp feishu-qr-bind.js feishu-qr-bind.js.backup
 ```
 
@@ -151,7 +151,7 @@ mv feishu-qr-bind-fixed.js feishu-qr-bind.js
 
 ### 步骤 3: 安装依赖
 ```bash
-cd /home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind
+cd /home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind
 npm install
 ```
 
@@ -296,7 +296,7 @@ await feishu_qr_bind({
    ```
 
 2. **验证配置保存**
-   - 检查 `~/.openclaw/openclaw.json`
+   - 检查 `~/.keagent/openclaw.json`
    - 确认 appId/appSecret 正确
 
 3. **验证凭证有效性**
@@ -328,7 +328,7 @@ await feishu_qr_bind({
 ### 源码位置
 
 - 官方插件：`/home/ubuntu/.npm-global/lib/node_modules/@larksuite/openclaw-lark-tools/`
-- 现有 skill: `/home/ubuntu/.openclaw/workspace-tech/skills/feishu-qr-bind/`
+- 现有 skill: `/home/ubuntu/.keagent/workspace-tech/skills/feishu-qr-bind/`
 - 修复版本：`feishu-qr-bind-fixed.js`
 
 ### 文档
