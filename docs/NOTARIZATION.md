@@ -1,6 +1,6 @@
 # macOS 应用公证指南
 
-本文档记录 KeClaw 应用的 macOS 公证流程。
+本文档记录 KeAgent 应用的 macOS 公证流程。
 
 ## 前提条件
 
@@ -16,7 +16,7 @@
 2. 登录你的 Apple ID
 3. 进入 "Security" → "App-Specific Passwords"
 4. 点击 "Generate Password"
-5. 输入标签（如 "KeClaw Notarization"）
+5. 输入标签（如 "KeAgent Notarization"）
 6. 复制生成的密码（格式: `xxxx-xxxx-xxxx-xxxx`）
 
 ### 2. 获取 Team ID
@@ -94,14 +94,14 @@ mac:
 
 ```bash
 # 验证 x64 版本
-spctl -a -t execute -vvv release/mac/KeClaw.app
+spctl -a -t execute -vvv release/mac/KeAgent.app
 
 # 验证 arm64 版本
-spctl -a -t execute -vvv release/mac-arm64/KeClaw.app
+spctl -a -t execute -vvv release/mac-arm64/KeAgent.app
 
 # 验证 stapling
-stapler validate release/mac/KeClaw.app
-stapler validate release/mac-arm64/KeClaw.app
+stapler validate release/mac/KeAgent.app
+stapler validate release/mac-arm64/KeAgent.app
 ```
 
 成功的输出应包含：

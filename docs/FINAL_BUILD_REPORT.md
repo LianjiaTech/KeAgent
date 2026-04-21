@@ -10,16 +10,16 @@
 
 ### DMG 文件
 ```
-文件名: KeClaw-0.3.0-alpha.0-mac-x64.dmg
+文件名: KeAgent-0.3.0-alpha.0-mac-x64.dmg
 大小:   177M
-路径:   release/KeClaw-0.3.0-alpha.0-mac-x64.dmg
+路径:   release/KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ### 应用程序
 ```
-名称:   KeClaw.app
+名称:   KeAgent.app
 大小:   624M
-路径:   release/mac/KeClaw.app
+路径:   release/mac/KeAgent.app
 签名:   ad-hoc
 验证:   ✅ 通过
 ```
@@ -33,7 +33,7 @@
 APPLE_ID=wantongtang@foxmail.com
 APPLE_APP_SPECIFIC_PASSWORD=sjwp-ofhf-mfrx-savs
 APPLE_TEAM_ID=U8XX263HJS
-CSC_LINK=./keclaw.p12
+CSC_LINK=./keagent.p12
 CSC_KEY_PASSWORD=wantt.564
 ```
 
@@ -92,25 +92,25 @@ export CSC_IDENTITY="-"
 
 ### 立即运行应用
 ```bash
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```
 
 ### 验证签名
 ```bash
 # 快速验证
-codesign -dv release/mac/KeClaw.app
+codesign -dv release/mac/KeAgent.app
 
 # 深度验证
-codesign --verify --deep --strict release/mac/KeClaw.app
+codesign --verify --deep --strict release/mac/KeAgent.app
 ```
 
 ### 安装 DMG
 ```bash
 # 方法 1: 双击安装
-open release/KeClaw-0.3.0-alpha.0-mac-x64.dmg
+open release/KeAgent-0.3.0-alpha.0-mac-x64.dmg
 
 # 方法 2: 命令行挂载
-hdiutil attach release/KeClaw-0.3.0-alpha.0-mac-x64.dmg
+hdiutil attach release/KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ---
@@ -168,7 +168,7 @@ pnpm run package:mac
 
 ```bash
 # 导入到系统钥匙串（需要管理员密码）
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign
@@ -201,7 +201,7 @@ pnpm run package:mac
 
 ### 应用签名
 ```bash
-$ codesign -dv release/mac/KeClaw.app
+$ codesign -dv release/mac/KeAgent.app
 Identifier=app.clawx.desktop
 Signature=adhoc
 TeamIdentifier=not set
@@ -209,15 +209,15 @@ TeamIdentifier=not set
 
 ### 深度验证
 ```bash
-$ codesign --verify --deep --strict release/mac/KeClaw.app
-release/mac/KeClaw.app: valid on disk
-release/mac/KeClaw.app: satisfies its Designated Requirement
+$ codesign --verify --deep --strict release/mac/KeAgent.app
+release/mac/KeAgent.app: valid on disk
+release/mac/KeAgent.app: satisfies its Designated Requirement
 ```
 
 ### DMG 文件
 ```bash
 $ ls -lh release/*.dmg
--rw-r--r--@ 1 thinkre  staff   177M Mar 25 14:04 KeClaw-0.3.0-alpha.0-mac-x64.dmg
+-rw-r--r--@ 1 thinkre  staff   177M Mar 25 14:04 KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ---
@@ -260,8 +260,8 @@ $ ls -lh release/*.dmg
 # 选择"仍要打开"
 
 # 或使用命令行
-xattr -cr release/mac/KeClaw.app
-open release/mac/KeClaw.app
+xattr -cr release/mac/KeAgent.app
+open release/mac/KeAgent.app
 ```
 
 ### 如果需要重新构建

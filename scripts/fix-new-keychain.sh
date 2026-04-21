@@ -20,7 +20,7 @@ echo ""
 
 # 2. 导入证书
 echo "2. 导入证书到新钥匙串..."
-security import keclaw.p12 \
+security import keagent.p12 \
     -k "$KEYCHAIN_PATH" \
     -P wantt.564 \
     -T /usr/bin/codesign \

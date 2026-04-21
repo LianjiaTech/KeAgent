@@ -31,7 +31,7 @@ sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keyc
 sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain /tmp/dev-id-ca.pem
 
 # 导入 p12 到系统钥匙串
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign \

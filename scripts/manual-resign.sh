@@ -4,7 +4,7 @@
 
 set -e
 
-APP_PATH="release/mac/KeClaw.app"
+APP_PATH="release/mac/KeAgent.app"
 CERT_NAME="Developer ID Application: tongtang wan (U8XX263HJS)"
 
 echo "═══════════════════════════════════════════════════════════"

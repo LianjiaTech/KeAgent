@@ -69,12 +69,12 @@ test.txt: errSecInternalComponent
 
 ```bash
 # 已成功构建
-✅ DMG:  release/KeClaw-0.3.0-alpha.0-mac-x64.dmg (177M)
-✅ App:   release/mac/KeClaw.app (624M)
+✅ DMG:  release/KeAgent-0.3.0-alpha.0-mac-x64.dmg (177M)
+✅ App:   release/mac/KeAgent.app (624M)
 ✅ 验证:  通过
 
 # 使用方法
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```
 
 **优点**:
@@ -102,7 +102,7 @@ bash scripts/fix-codesign-chain.sh
 
 ```bash
 # 1. 将证书移到系统钥匙串
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign
@@ -168,21 +168,21 @@ rm ~/Library/Keychains/login.keychain-db
 bash scripts/build-dev.sh
 
 # 2. 传输未签名应用到另一台 Mac
-tar -czf KeClaw-unsigned.tar.gz release/mac/KeClaw.app
+tar -czf KeAgent-unsigned.tar.gz release/mac/KeAgent.app
 
 # 在另一台 Mac 上
 # 3. 解压并签名
-tar -xzf KeClaw-unsigned.tar.gz
+tar -xzf KeAgent-unsigned.tar.gz
 codesign --force --deep --sign "Developer ID Application" \
   --entitlements entitlements.mac.plist \
   --timestamp --options runtime \
-  KeClaw.app
+  KeAgent.app
 
 # 4. 创建 DMG
-hdiutil create -volname "KeClaw" \
-  -srcfolder KeClaw.app \
+hdiutil create -volname "KeAgent" \
+  -srcfolder KeAgent.app \
   -ov -format UDZO \
-  KeClaw.dmg
+  KeAgent.dmg
 ```
 
 ---
@@ -211,7 +211,7 @@ bash scripts/check-certificate-chain.sh
 
 ### 验证签名
 ```bash
-bash scripts/verify-signatures.sh release/mac/KeClaw.app
+bash scripts/verify-signatures.sh release/mac/KeAgent.app
 ```
 
 ### 测试签名命令
@@ -245,7 +245,7 @@ codesign --force --sign "Developer ID Application" \
 ### 短期（立即可用）✅
 ```bash
 # 使用 ad-hoc 签名
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```
 
 ### 中期（尝试修复）🔧
@@ -254,7 +254,7 @@ open release/mac/KeClaw.app
 bash scripts/fix-codesign-chain.sh
 
 # 或手动导入到系统钥匙串
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign

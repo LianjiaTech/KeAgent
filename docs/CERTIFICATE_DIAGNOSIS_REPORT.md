@@ -97,7 +97,7 @@ sudo killall securityd
 
 ```bash
 # 1. 将证书导入系统钥匙串
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign

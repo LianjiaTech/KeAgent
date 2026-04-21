@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# KeClaw macOS Notarization Script
+# KeAgent macOS Notarization Script
 #
 # Usage: ./scripts/notarize-macos.sh [--clean]
 #
@@ -25,7 +25,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${BLUE}  KeClaw macOS Notarization${NC}"
+echo -e "${BLUE}  KeAgent macOS Notarization${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 # Load .env file
@@ -88,22 +88,22 @@ echo -e "${BLUE}  Verification${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 # Verify x64
-if [ -d "release/mac/KeClaw.app" ]; then
-    RESULT=$(spctl -a -t execute -vvv release/mac/KeClaw.app 2>&1)
+if [ -d "release/mac/KeAgent.app" ]; then
+    RESULT=$(spctl -a -t execute -vvv release/mac/KeAgent.app 2>&1)
     if echo "$RESULT" | grep -q "Notarized Developer ID"; then
         echo -e "${GREEN}✓${NC} x64: Notarized"
-        stapler validate release/mac/KeClaw.app &>/dev/null && echo -e "${GREEN}✓${NC} x64: Stapled"
+        stapler validate release/mac/KeAgent.app &>/dev/null && echo -e "${GREEN}✓${NC} x64: Stapled"
     else
         echo -e "${RED}✗${NC} x64: Not notarized"
     fi
 fi
 
 # Verify arm64
-if [ -d "release/mac-arm64/KeClaw.app" ]; then
-    RESULT=$(spctl -a -t execute -vvv release/mac-arm64/KeClaw.app 2>&1)
+if [ -d "release/mac-arm64/KeAgent.app" ]; then
+    RESULT=$(spctl -a -t execute -vvv release/mac-arm64/KeAgent.app 2>&1)
     if echo "$RESULT" | grep -q "Notarized Developer ID"; then
         echo -e "${GREEN}✓${NC} arm64: Notarized"
-        stapler validate release/mac-arm64/KeClaw.app &>/dev/null && echo -e "${GREEN}✓${NC} arm64: Stapled"
+        stapler validate release/mac-arm64/KeAgent.app &>/dev/null && echo -e "${GREEN}✓${NC} arm64: Stapled"
     else
         echo -e "${RED}✗${NC} arm64: Not notarized"
     fi

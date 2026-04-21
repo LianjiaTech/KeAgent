@@ -740,7 +740,7 @@ export function createGatewayWsTransportInvoker(
           maxProtocol: 3,
           client: {
             id: 'openclaw-control-ui',
-            displayName: 'KeClaw UI',
+            displayName: 'KeAgent UI',
             version: '1.0.0',
             platform: window.electron?.platform ?? 'unknown',
             mode: 'webchat',

@@ -2,9 +2,9 @@
 
 # Get the app version from package.json
 APP_VERSION=$(node -p "require('./package.json').version")
-APP_NAME="KeClaw"
-DMG_NAME="KeClaw-$APP_VERSION-mac-x64"
-SOURCE_APP="release/mac/KeClaw.app"
+APP_NAME="KeAgent"
+DMG_NAME="KeAgent-$APP_VERSION-mac-x64"
+SOURCE_APP="release/mac/KeAgent.app"
 OUTPUT_DMG="release/$DMG_NAME.dmg"
 
 echo "Creating DMG for $APP_NAME v$APP_VERSION"

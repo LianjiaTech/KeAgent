@@ -4,8 +4,8 @@
 
 ### 构建结果
 ```
-✅ DMG 文件: release/KeClaw-0.3.0-alpha.0-mac-x64.dmg (177M)
-✅ 应用路径: release/mac/KeClaw.app
+✅ DMG 文件: release/KeAgent-0.3.0-alpha.0-mac-x64.dmg (177M)
+✅ 应用路径: release/mac/KeAgent.app
 ✅ 签名类型: ad-hoc (开发模式)
 ✅ 签名验证: 通过 (valid on disk)
 ✅ 深度验证: 通过 (satisfies Designated Requirement)
@@ -102,7 +102,7 @@ bash scripts/check-certificate-chain.sh
 # Step 3: 构建发布版本
 export APPLE_ID=your@email.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 pnpm run package:mac
 ```
 
@@ -117,26 +117,26 @@ pnpm run package:mac
 
 ```bash
 # 应用签名
-$ codesign -dv release/mac/KeClaw.app
+$ codesign -dv release/mac/KeAgent.app
 Identifier=app.clawx.desktop
 Signature=adhoc
 TeamIdentifier=not set
 
 # 深度验证
-$ codesign --verify --deep --strict release/mac/KeClaw.app
-release/mac/KeClaw.app: valid on disk
-release/mac/KeClaw.app: satisfies its Designated Requirement
+$ codesign --verify --deep --strict release/mac/KeAgent.app
+release/mac/KeAgent.app: valid on disk
+release/mac/KeAgent.app: satisfies its Designated Requirement
 
 # DMG 文件
 $ ls -lh release/*.dmg
--rw-r--r--@ 1 thinkre  staff   177M Mar 25 13:50 KeClaw-0.3.0-alpha.0-mac-x64.dmg
+-rw-r--r--@ 1 thinkre  staff   177M Mar 25 13:50 KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ### 原生二进制文件
 
 ```
 总数: 10 个 .node 文件
-位置: KeClaw.app/Contents/Resources/
+位置: KeAgent.app/Contents/Resources/
 状态: 未单独签名（应用整体已签名）
 影响: 对于 ad-hoc 签名是正常的，不影响运行
 ```
@@ -147,7 +147,7 @@ $ ls -lh release/*.dmg
 
 ```bash
 # 验证签名
-pnpm run verify:signatures release/mac/KeClaw.app
+pnpm run verify:signatures release/mac/KeAgent.app
 
 # 检查证书链
 bash scripts/check-certificate-chain.sh
@@ -178,7 +178,7 @@ bash scripts/build-dev.sh
 [after-pack-resign] Found 30 native binaries
 [after-sign] Using ad-hoc signing (development mode)
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
+KeAgent.app: valid on disk
 ✅ DMG created: 177M
 ```
 
@@ -186,7 +186,7 @@ KeClaw.app: valid on disk
 ```
 [after-sign] Using identity: Developer ID Application
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
+KeAgent.app: valid on disk
 ✅ Notarization submitted (如果配置)
 ```
 
@@ -194,7 +194,7 @@ KeClaw.app: valid on disk
 
 ### 立即可用
 1. ✅ **开发测试**: 使用 `bash scripts/build-dev.sh`
-2. ✅ **本地运行**: `open release/mac/KeClaw.app`
+2. ✅ **本地运行**: `open release/mac/KeAgent.app`
 3. ✅ **功能测试**: 应用所有功能正常
 
 ### 正式发布
@@ -213,7 +213,7 @@ KeClaw.app: valid on disk
    ```bash
    export APPLE_ID=your@email.com
    export APPLE_TEAM_ID=YOUR_TEAM_ID
-   export CSC_LINK=./keclaw.p12
+   export CSC_LINK=./keagent.p12
    export CSC_KEY_PASSWORD=your_password
    ```
 
@@ -249,7 +249,7 @@ DEBUG=electron-builder pnpm run package:mac
 # 选择"仍要打开"
 
 # 或使用命令行
-xattr -cr release/mac/KeClaw.app
+xattr -cr release/mac/KeAgent.app
 ```
 
 ## 📊 对比
@@ -298,5 +298,5 @@ xattr -cr release/mac/KeClaw.app
 **立即开始使用**:
 ```bash
 bash scripts/build-dev.sh
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```

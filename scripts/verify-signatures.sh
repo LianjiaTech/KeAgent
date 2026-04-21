@@ -6,7 +6,7 @@ set -e
 
 if [ $# -eq 0 ]; then
   echo "Usage: $0 <path-to-app-bundle>"
-  echo "Example: $0 release/mac-arm64/KeClaw.app"
+  echo "Example: $0 release/mac-arm64/KeAgent.app"
   exit 1
 fi
 
