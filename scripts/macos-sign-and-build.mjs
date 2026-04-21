@@ -5,8 +5,8 @@ import { $, fs } from 'zx';
 // Declare question globally, as it's provided by zx
 const question = global.question;
 
-// macOS Application Build and Sign Script for KeClaw
-console.log('🚀 KeClaw macOS Application Build and Sign Script');
+// macOS Application Build and Sign Script for KeAgent
+console.log('🚀 KeAgent macOS Application Build and Sign Script');
 
 async function main() {
   // Use existing environment variables from .env.local if they exist
@@ -24,13 +24,13 @@ async function main() {
   console.log('\n📋 Configuration:');
   console.log(`Apple ID: ${appleId}`);
   console.log(`Team ID: ${appleTeamId}`);
-  console.log(`Certificate file: keclaw.p12`);
+  console.log(`Certificate file: keagent.p12`);
   console.log(`Has password: ${!!process.env.CSC_KEY_PASSWORD || !!certificatePassword}`);
 
   // Verify the certificate files exist
-  if (!fs.existsSync('./keclaw.p12')) {
-    console.error('\n❌ Error: keclaw.p12 certificate file not found');
-    console.error('Make sure the keclaw.p12 file exists in the project root.');
+  if (!fs.existsSync('./keagent.p12')) {
+    console.error('\n❌ Error: keagent.p12 certificate file not found');
+    console.error('Make sure the keagent.p12 file exists in the project root.');
     process.exit(1);
   }
 
@@ -40,13 +40,13 @@ async function main() {
     // Import certificate into keychain
     console.log('\n🔐 Importing certificate to keychain...');
     if (certificatePassword) {
-      await $`security import ./keclaw.p12 -k ~/Library/Keychains/login.keychain -P ${certificatePassword} -T /usr/bin/codesign`;
+      await $`security import ./keagent.p12 -k ~/Library/Keychains/login.keychain -P ${certificatePassword} -T /usr/bin/codesign`;
     } else {
-      await $`security import ./keclaw.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign`;
+      await $`security import ./keagent.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign`;
     }
 
     // Set environment variables for electron-builder
-    process.env.CSC_LINK = './keclaw.p12';
+    process.env.CSC_LINK = './keagent.p12';
     process.env.CSC_KEY_PASSWORD = certificatePassword;
     process.env.APPLE_ID = appleId;
     process.env.APPLE_TEAM_ID = appleTeamId;

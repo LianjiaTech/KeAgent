@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**KeClaw** (ClawX) is an Electron-based desktop application that provides a GUI for OpenClaw AI agents. It bridges the gap between powerful AI agents and everyday users by transforming command-line AI orchestration into an accessible desktop experience.
+**KeAgent** (ClawX) is an Electron-based desktop application that provides a GUI for OpenClaw AI agents. It bridges the gap between powerful AI agents and everyday users by transforming command-line AI orchestration into an accessible desktop experience.
 
 ## Common Commands
 
@@ -130,7 +130,7 @@ The renderer communicates with main process via IPC channels defined in `electro
 
 ## Multi-Agent System
 
-KeClaw supports multiple agents with channel bindings:
+KeAgent supports multiple agents with channel bindings:
 
 1. **Agent creation**: Creates workspace directory + agent config entry
 2. **Channel binding**: Associates a channel account with an agent

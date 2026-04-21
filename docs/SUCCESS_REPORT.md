@@ -10,15 +10,15 @@
 
 ### DMG 文件
 ```
-文件名: KeClaw-0.3.0-mac-x64.dmg
+文件名: KeAgent-0.3.0-mac-x64.dmg
 大小:   204M
-路径:   release/KeClaw-0.3.0-mac-x64.dmg
+路径:   release/KeAgent-0.3.0-mac-x64.dmg
 ```
 
 ### 应用程序
 ```
-名称:   KeClaw.app
-路径:   release/mac/KeClaw.app
+名称:   KeAgent.app
+路径:   release/mac/KeAgent.app
 签名:   Developer ID Application: tongtang wan (U8XX263HJS)
 验证:   ✅ 通过
 ```
@@ -67,21 +67,21 @@ Authority=Apple Root CA
 
 ### 立即运行
 ```bash
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```
 
 ### 安装 DMG
 ```bash
-open release/KeClaw-0.3.0-mac-x64.dmg
+open release/KeAgent-0.3.0-mac-x64.dmg
 ```
 
 ### 验证签名
 ```bash
 # 应用签名验证
-codesign --verify --deep --strict release/mac/KeClaw.app
+codesign --verify --deep --strict release/mac/KeAgent.app
 
 # 查看签名详情
-codesign -dv release/mac/KeClaw.app
+codesign -dv release/mac/KeAgent.app
 ```
 
 ---
@@ -184,7 +184,7 @@ codesign -dv release/mac/KeClaw.app
 ### 开发测试
 ```bash
 # 运行应用
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 
 # 验证所有功能
 ```

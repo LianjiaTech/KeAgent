@@ -26,7 +26,7 @@ errSecInternalComponent
 security delete-certificate -c "Developer ID Application: tongtang wan" login.keychain || true
 
 # Step 2: 重新导入证书（需要证书密码）
-security import keclaw.p12 -k login.keychain -P <你的密码> -T /usr/bin/codesign -T /usr/bin/productbuild
+security import keagent.p12 -k login.keychain -P <你的密码> -T /usr/bin/codesign -T /usr/bin/productbuild
 
 # Step 3: 设置钥匙串访问权限（允许 codesign 访问）
 security set-key-partition-list -S apple-tool:,apple: -s -k <钥匙串密码> login.keychain
@@ -39,10 +39,10 @@ security find-identity -v -p codesigning
 
 ```bash
 # 导入到系统钥匙串（需要管理员权限）
-sudo security import keclaw.p12 -k /Library/Keychains/System.keychain -P <密码>
+sudo security import keagent.p12 -k /Library/Keychains/System.keychain -P <密码>
 
 # 设置信任
-sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain keclaw.p12
+sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain keagent.p12
 ```
 
 ### 方案 3: 修复钥匙串信任设置
@@ -101,7 +101,7 @@ pnpm run package:mac
 ```
 ✅ 构建成功
 ✅ 签名验证通过
-✅ DMG 已创建：release/KeClaw-0.3.0-alpha.0-mac-x64.dmg (177M)
+✅ DMG 已创建：release/KeAgent-0.3.0-alpha.0-mac-x64.dmg (177M)
 ✅ 所有原生二进制已签名
 ✅ 字体文件已清理
 ```
@@ -114,7 +114,7 @@ pnpm run package:mac
 
 ## 🚀 快速修复命令
 
-### 如果你有 keclaw.p12 和密码：
+### 如果你有 keagent.p12 和密码：
 
 ```bash
 # 一键修复脚本
@@ -130,9 +130,9 @@ security delete-certificate -c "Developer ID Application: tongtang wan" login.ke
 
 # 导入证书
 if [ -z "$CERT_PASSWORD" ]; then
-  security import keclaw.p12 -k login.keychain -T /usr/bin/codesign
+  security import keagent.p12 -k login.keychain -T /usr/bin/codesign
 else
-  security import keclaw.p12 -k login.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
+  security import keagent.p12 -k login.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
 fi
 
 # 设置访问权限
@@ -210,7 +210,7 @@ codesign --force --sign "Developer ID Application: tongtang wan (U8XX263HJS)" --
 ```
 [after-sign] Using ad-hoc signing (development mode)
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
+KeAgent.app: valid on disk
 ✅ DMG created: 177M
 ```
 
@@ -218,7 +218,7 @@ KeClaw.app: valid on disk
 ```
 [after-sign] Using identity: Developer ID Application
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
+KeAgent.app: valid on disk
 ✅ Notarization submitted
 ```
 

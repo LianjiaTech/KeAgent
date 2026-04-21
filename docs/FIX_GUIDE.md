@@ -27,7 +27,7 @@
 bash scripts/fix-errsecinternal.sh
 
 # 或手动执行
-sudo security import keclaw.p12 \
+sudo security import keagent.p12 \
   -k /Library/Keychains/System.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign \
@@ -94,7 +94,7 @@ codesign --force --sign "Developer ID Application: tongtang wan (U8XX263HJS)" /t
 security create-keychain -p "temp123" /tmp/codesign.keychain
 
 # 2. 导入证书
-security import keclaw.p12 \
+security import keagent.p12 \
   -k /tmp/codesign.keychain \
   -P wantt.564 \
   -T /usr/bin/codesign
@@ -129,16 +129,16 @@ pnpm run package:mac
 codesign --force --deep --sign "Developer ID Application: tongtang wan (U8XX263HJS)" \
   --entitlements entitlements.mac.plist \
   --timestamp --options runtime \
-  release/mac/KeClaw.app
+  release/mac/KeAgent.app
 
 # 3. 验证签名
-codesign --verify --deep --strict release/mac/KeClaw.app
+codesign --verify --deep --strict release/mac/KeAgent.app
 
 # 4. 手动创建 DMG（可选）
-hdiutil create -volname "KeClaw" \
-  -srcfolder release/mac/KeClaw.app \
+hdiutil create -volname "KeAgent" \
+  -srcfolder release/mac/KeAgent.app \
   -ov -format UDZO \
-  release/KeClaw-signed.dmg
+  release/KeAgent-signed.dmg
 ```
 
 ---
@@ -154,25 +154,25 @@ hdiutil create -volname "KeClaw" \
 bash scripts/build-dev.sh
 
 # 2. 打包应用
-tar -czf KeClaw-app.tar.gz release/mac/KeClaw.app
+tar -czf KeAgent-app.tar.gz release/mac/KeAgent.app
 
 # 传输到另一台 Mac，然后:
 
 # 另一台 Mac:
 # 3. 解压
-tar -xzf KeClaw-app.tar.gz
+tar -xzf KeAgent-app.tar.gz
 
 # 4. 签名
 codesign --force --deep --sign "Developer ID Application" \
   --entitlements entitlements.mac.plist \
   --timestamp --options runtime \
-  KeClaw.app
+  KeAgent.app
 
 # 5. 创建 DMG
-hdiutil create -volname "KeClaw" \
-  -srcfolder KeClaw.app \
+hdiutil create -volname "KeAgent" \
+  -srcfolder KeAgent.app \
   -ov -format UDZO \
-  KeClaw.dmg
+  KeAgent.dmg
 ```
 
 ---
@@ -300,7 +300,7 @@ export CSC_IDENTITY_AUTO_DISCOVERY=false
 pnpm run package:mac
 
 # 运行应用
-open release/mac/KeClaw.app
+open release/mac/KeAgent.app
 ```
 
 **优点**:

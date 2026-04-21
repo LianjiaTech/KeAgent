@@ -5,7 +5,7 @@
 ### ✅ 构建成功（使用 Ad-hoc 签名）
 - ✅ 应用已正确构建
 - ✅ 所有原生二进制已签名
-- ✅ DMG 已创建：`release/KeClaw-0.3.0-alpha.0-mac-x64.dmg` (177M)
+- ✅ DMG 已创建：`release/KeAgent-0.3.0-alpha.0-mac-x64.dmg` (177M)
 - ✅ 签名验证通过
 
 ### ⚠️ 证书链问题（需要修复用于正式发布）
@@ -44,7 +44,7 @@ bash scripts/fix-certificate.sh
 # Step 2: 构建并签名
 export APPLE_ID=your@email.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=your_password
 pnpm run package:mac
 ```
@@ -168,16 +168,16 @@ codesign --force --sign "Developer ID Application" /tmp/test.txt
 [after-pack-resign] Removed 0 pre-existing signatures
 [after-sign] Using ad-hoc signing (development mode)
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
-✅ building target=DMG arch=x64 file=release/KeClaw-0.3.0-alpha.0-mac-x64.dmg
+KeAgent.app: valid on disk
+✅ building target=DMG arch=x64 file=release/KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ### Developer ID 签名（发布）
 ```
 [after-sign] Using identity: Developer ID Application
 [after-sign] ✅ Deep signing completed successfully
-KeClaw.app: valid on disk
-✅ notarizing file=KeClaw-0.3.0-alpha.0-mac-x64.dmg
+KeAgent.app: valid on disk
+✅ notarizing file=KeAgent-0.3.0-alpha.0-mac-x64.dmg
 ```
 
 ## 🚦 下一步建议
@@ -205,7 +205,7 @@ tail -100 /tmp/build.log
 bash scripts/check-certificate-chain.sh
 
 # 签名验证
-pnpm run verify:signatures release/mac/KeClaw.app
+pnpm run verify:signatures release/mac/KeAgent.app
 ```
 
 ---

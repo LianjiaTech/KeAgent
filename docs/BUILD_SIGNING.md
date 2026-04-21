@@ -1,13 +1,13 @@
-# KeClaw macOS Application Signing Guide
+# KeAgent macOS Application Signing Guide
 
-This guide explains how to sign and build your KeClaw macOS application using the provided certificates.
+This guide explains how to sign and build your KeAgent macOS application using the provided certificates.
 
 ## Prerequisites
 
 - macOS operating system
 - Apple Developer account with a valid developer ID certificate
 - Valid Apple ID and team ID
-- The certificates `keclaw.p12` and `keclaw.certSigningRequest` (the latter is kept for historical purposes, only the `.p12` file is used for signing)
+- The certificates `keagent.p12` and `keagent.certSigningRequest` (the latter is kept for historical purposes, only the `.p12` file is used for signing)
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ There are two ways to build and sign your application:
 
 ### Method 1: Interactive Script (Recommended)
 
-1. Make sure you have the `keclaw.p12` file in your project root
+1. Make sure you have the `keagent.p12` file in your project root
 2. Run the interactive build script:
    ```bash
    zx scripts/macos-sign-and-build.mjs
@@ -46,7 +46,7 @@ This script will prompt you for the following information:
    ```bash
    export APPLE_ID=your_apple_id@example.com
    export APPLE_TEAM_ID=YOUR_TEAM_ID
-   export CSC_LINK=./keclaw.p12
+   export CSC_LINK=./keagent.p12
    export CSC_KEY_PASSWORD=your_certificate_password_if_any
    ```
 
@@ -64,7 +64,7 @@ This script will prompt you for the following information:
 
 ## Certificate Security
 
-- Keep your `keclaw.p12` file secure and do not commit it to public repositories
+- Keep your `keagent.p12` file secure and do not commit it to public repositories
 - The certificate contains private keys that allow code signing
 - If compromised, revoke and regenerate the certificate in your Apple Developer portal
 
@@ -72,7 +72,7 @@ This script will prompt you for the following information:
 
 - If you encounter code signing errors, ensure your certificate is properly imported to your keychain:
   ```bash
-  security import ./keclaw.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
+  security import ./keagent.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
   ```
 
 - For notarization errors, verify your Apple ID and team ID are correct

@@ -2,7 +2,7 @@
 
 import { $, fs } from 'zx';
 
-console.log('🚀 Starting KeClaw macOS build with cleanup of problematic files');
+console.log('🚀 Starting KeAgent macOS build with cleanup of problematic files');
 
 // Clean up problematic test/coverage files that cause signing issues
 console.log('🧹 Removing problematic test files that cause code signing issues...');

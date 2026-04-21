@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# macOS Application Build and Sign Script for KeClaw
+# macOS Application Build and Sign Script for KeAgent
 # Usage: ./scripts/build-macos.sh
 
 set -e  # Exit immediately if a command exits with a non-zero status
 
-echo "🚀 KeClaw macOS Application Build and Sign Script"
+echo "🚀 KeAgent macOS Application Build and Sign Script"
 echo "=================================================="
 
 # Function to check if a command exists
@@ -30,8 +30,8 @@ if ! command_exists security; then
 fi
 
 # Check for required certificate files
-if [ ! -f "./keclaw.p12" ]; then
-    echo "❌ Error: keclaw.p12 certificate file not found in project root."
+if [ ! -f "./keagent.p12" ]; then
+    echo "❌ Error: keagent.p12 certificate file not found in project root."
     exit 1
 fi
 
@@ -45,7 +45,7 @@ echo
 echo "📋 Configuration Summary:"
 echo "Apple ID: $apple_id"
 echo "Team ID: $apple_team_id"
-echo "Certificate file: keclaw.p12"
+echo "Certificate file: keagent.p12"
 echo "Has password: $(if [ -n "$cert_password" ]; then echo "Yes"; else echo "No"; fi)"
 echo
 
@@ -62,9 +62,9 @@ done
 echo
 echo "🔐 Importing certificate to keychain..."
 if [ -n "$cert_password" ]; then
-    security import ./keclaw.p12 -k ~/Library/Keychains/login.keychain -P "$cert_password" -T /usr/bin/codesign
+    security import ./keagent.p12 -k ~/Library/Keychains/login.keychain -P "$cert_password" -T /usr/bin/codesign
 else
-    security import ./keclaw.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
+    security import ./keagent.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
 fi
 
 echo
@@ -81,7 +81,7 @@ echo "📱 Building, signing and notarizing macOS application..."
 # Set environment variables for electron-builder
 export APPLE_ID="$apple_id"
 export APPLE_TEAM_ID="$apple_team_id"
-export CSC_LINK="./keclaw.p12"
+export CSC_LINK="./keagent.p12"
 export CSC_KEY_PASSWORD="$cert_password"
 
 pnpm run package:mac

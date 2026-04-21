@@ -61,10 +61,10 @@ fi
 
 echo ""
 
-# 4. 重新导入应用证书（如果存在 keclaw.p12）
-if [ -f "keclaw.p12" ]; then
+# 4. 重新导入应用证书（如果存在 keagent.p12）
+if [ -f "keagent.p12" ]; then
   echo "🔑 Step 4: 重新导入应用证书..."
-  echo "  找到 keclaw.p12 文件"
+  echo "  找到 keagent.p12 文件"
 
   read -s -p "  请输入证书密码（没有密码则直接回车）: " CERT_PASSWORD
   echo ""
@@ -74,9 +74,9 @@ if [ -f "keclaw.p12" ]; then
 
   # 导入新证书
   if [ -z "$CERT_PASSWORD" ]; then
-    security import keclaw.p12 -k login.keychain -T /usr/bin/codesign -T /usr/bin/productbuild
+    security import keagent.p12 -k login.keychain -T /usr/bin/codesign -T /usr/bin/productbuild
   else
-    security import keclaw.p12 -k login.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
+    security import keagent.p12 -k login.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
   fi
 
   echo "  ✓ 证书已重新导入"
@@ -86,7 +86,7 @@ if [ -f "keclaw.p12" ]; then
   security set-key-partition-list -S apple-tool:,apple: -s -k "$CERT_PASSWORD" login.keychain 2>/dev/null || true
   echo "  ✓ 权限已设置"
 else
-  echo "⚠️  Step 4: 未找到 keclaw.p12 文件，跳过"
+  echo "⚠️  Step 4: 未找到 keagent.p12 文件，跳过"
 fi
 
 echo ""

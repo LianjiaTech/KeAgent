@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# KeClaw macOS Installation Script
-# Created: March 2026, KeClaw Team
+# KeAgent macOS Installation Script
+# Created: March 2026, KeAgent Team
 
 # Script version for tracking
 SCRIPT_VERSION="1.0"
 
 echo " "
 echo "╔══════════════════════════════════════╗"
-echo "║            KeClaw Installer          ║"
+echo "║            KeAgent Installer          ║"
 echo "║         Version $SCRIPT_VERSION for macOS        ║"
 echo "╚══════════════════════════════════════╝"
 echo " "
@@ -43,10 +43,10 @@ fi
 echo "✅ Admin rights acquired. Checking available package..."
 
 # Check if application already exists and handle replacement
-INSTALL_PATH="/Applications/KeClaw.app"
+INSTALL_PATH="/Applications/KeAgent.app"
 APP_ALREADY_EXISTS=false
 if [ -d "$INSTALL_PATH" ]; then
-    echo "⚠️  KeClaw is already installed at $INSTALL_PATH"
+    echo "⚠️  KeAgent is already installed at $INSTALL_PATH"
     read -p "Do you want to proceed with replacement? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -67,7 +67,7 @@ fi
 # Locate the app bundle in the source location
 echo "🔍 Locating application bundle..."
 
-# Look for the source KeClaw app in a few common locations:
+# Look for the source KeAgent app in a few common locations:
 # 1. Current directory as sibling to the script
 # 2. One directory up, in a release/ or dist/ folder
 # 3. Ask the user for manual location
@@ -76,27 +76,27 @@ SOURCE_APP_FOUND=false
 SOURCE_APP_PATH=""
 
 # 1. Check in the same directory as this script
-if [ -d "./KeClaw.app" ]; then
-    SOURCE_APP_PATH="./KeClaw.app"
+if [ -d "./KeAgent.app" ]; then
+    SOURCE_APP_PATH="./KeAgent.app"
     SOURCE_APP_FOUND=true
-elif [ -d "../KeClaw.app" ]; then
-    SOURCE_APP_PATH="../KeClaw.app"
+elif [ -d "../KeAgent.app" ]; then
+    SOURCE_APP_PATH="../KeAgent.app"
     SOURCE_APP_FOUND=true
 else
-    # Look for KeClaw in common distribution subdirectories
+    # Look for KeAgent in common distribution subdirectories
     for dir in release dist .; do
-        if [ -d "$dir/KeClaw.app" ]; then
-            SOURCE_APP_PATH="$dir/KeClaw.app"
+        if [ -d "$dir/KeAgent.app" ]; then
+            SOURCE_APP_PATH="$dir/KeAgent.app"
             SOURCE_APP_FOUND=true
             break
         fi
     done
     
-    # Also check for DMG-mounted volume containing KeClaw
+    # Also check for DMG-mounted volume containing KeAgent
     if [ ! "$SOURCE_APP_FOUND" = true ]; then
-        for mount_point in /Volumes/*KeClaw* /Volumes/*Keclaw*; do
-            if [ -d "$mount_point/KeClaw.app" ]; then
-                SOURCE_APP_PATH="$mount_point/KeClaw.app"
+        for mount_point in /Volumes/*KeAgent* /Volumes/*KeAgent*; do
+            if [ -d "$mount_point/KeAgent.app" ]; then
+                SOURCE_APP_PATH="$mount_point/KeAgent.app"
                 SOURCE_APP_FOUND=true
                 break
             fi
@@ -106,28 +106,28 @@ fi
 
 # If still not found, ask the user
 if [ ! "$SOURCE_APP_FOUND" = true ]; then
-    echo "❌ Could not find KeClaw.app to install!"
+    echo "❌ Could not find KeAgent.app to install!"
     echo " "
-    echo "If you opened this installer from the KeClaw DMG:"
+    echo "If you opened this installer from the KeAgent DMG:"
     echo "  • Make sure the DMG is still mounted (double click on it)"
     echo "  • Run this script from the mounted DMG volume"
     echo " "
     echo "If you copied this script elsewhere:"
-    echo "  • Move it back to the same location as KeClaw.app and run again"
+    echo "  • Move it back to the same location as KeAgent.app and run again"
     read -n1 -r -p "Press any key to exit and view installation guide..." key
     echo " "
-    open https://keclaw.ai/install-help  # This would be linked to a help page in real implementation
+    open https://keagent.ai/install-help  # This would be linked to a help page in real implementation
     exit 1
 fi
 
 echo "✅ Found: $SOURCE_APP_PATH"
 
 # Begin copying the application
-echo "🚀 Installing KeClaw to Applications folder..."
+echo "🚀 Installing KeAgent to Applications folder..."
 
 if [ "$ADMIN_ACCESS" = true ]; then
     if sudo cp -R "$SOURCE_APP_PATH" /Applications/; then
-        echo "✅ KeClaw successfully installed!"
+        echo "✅ KeAgent successfully installed!"
     else
         echo "❌ Failed to copy application to /Applications/"
         read -n1 -r -p "Press any key to exit..." key
@@ -135,7 +135,7 @@ if [ "$ADMIN_ACCESS" = true ]; then
     fi
 else
     if cp -R "$SOURCE_APP_PATH" /Applications/; then
-        echo "✅ KeClaw successfully installed!"
+        echo "✅ KeAgent successfully installed!"
     else
         echo "❌ Failed to copy application to /Applications/"
         read -n1 -r -p "Press any key to exit..." key
@@ -153,14 +153,14 @@ echo "🔄 Registering application with Launch Services..."
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$INSTALL_PATH" 2>/dev/null || true
 
 # Try to open the installed application
-echo "🎯 Launching KeClaw!"
+echo "🎯 Launching KeAgent!"
 open "$INSTALL_PATH"
 
 sleep 2
 
 echo " "
 echo "🎉 Installation Complete!"
-echo "KeClaw is now installed and has been launched."
+echo "KeAgent is now installed and has been launched."
 echo " "
 echo "Troubleshooting tip: If you encounter any issues:"
 echo "  • Check System Preferences > Security & Privacy if app fails to open"

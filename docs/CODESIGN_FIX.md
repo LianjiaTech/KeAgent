@@ -82,7 +82,7 @@ if (platform === 'darwin') {
 # 设置环境变量
 export APPLE_ID=your_apple_id@example.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=your_password
 
 # 构建
@@ -100,13 +100,13 @@ zx scripts/macos-sign-and-build.mjs
 使用验证脚本检查所有签名是否正确：
 
 ```bash
-./scripts/verify-signatures.sh release/mac-arm64/KeClaw.app
+./scripts/verify-signatures.sh release/mac-arm64/KeAgent.app
 ```
 
 输出示例：
 ```
 ═══════════════════════════════════════════════════════════
-Verifying signatures for: release/mac-arm64/KeClaw.app
+Verifying signatures for: release/mac-arm64/KeAgent.app
 ═══════════════════════════════════════════════════════════
 
 🔍 Finding native binaries...
@@ -136,13 +136,13 @@ Summary:
 codesign -vvv --deep --strict path/to/binary.node
 
 # 验证整个 app bundle
-codesign -vvv --deep --strict KeClaw.app
+codesign -vvv --deep --strict KeAgent.app
 
 # 查看签名信息
-codesign -dvvv KeClaw.app
+codesign -dvvv KeAgent.app
 
 # 检查 entitlements
-codesign -d --entitlements :- KeClaw.app
+codesign -d --entitlements :- KeAgent.app
 ```
 
 ## 公证（Notarization）
@@ -166,7 +166,7 @@ xcrun notarytool log <submission-id> --apple-id your@email.com --team-id TEAM_ID
 **解决**：
 ```bash
 # 找出所有未签名或签名无效的文件
-find KeClaw.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" \) -exec codesign -v {} \; 2>&1 | grep -v "valid on disk"
+find KeAgent.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" \) -exec codesign -v {} \; 2>&1 | grep -v "valid on disk"
 
 # 手动重新签名
 codesign --force --sign "Developer ID Application" --entitlements entitlements.mac.plist --timestamp --options runtime path/to/binary
@@ -179,7 +179,7 @@ codesign --force --sign "Developer ID Application" --entitlements entitlements.m
 **解决**：使用 `--deep` 选项对整个 app bundle 进行深度签名：
 
 ```bash
-codesign --force --deep --sign "Developer ID Application" --entitlements entitlements.mac.plist --timestamp --options runtime KeClaw.app
+codesign --force --deep --sign "Developer ID Application" --entitlements entitlements.mac.plist --timestamp --options runtime KeAgent.app
 ```
 
 ### Q3: 某些 .node 文件无法签名

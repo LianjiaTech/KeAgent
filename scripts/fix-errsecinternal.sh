@@ -20,7 +20,7 @@ if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
     echo "正在导入证书..."
 
     # 导入到系统钥匙串
-    sudo security import keclaw.p12 \
+    sudo security import keagent.p12 \
         -k /Library/Keychains/System.keychain \
         -P wantt.564 \
         -T /usr/bin/codesign \

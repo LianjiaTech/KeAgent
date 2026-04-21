@@ -9,9 +9,9 @@ const { join, resolve } = require('path');
 const { readdirSync, statSync, existsSync, rmSync } = require('fs');
 
 async function main() {
-  console.log('🔧 Post-build signing fix for KeClaw macOS app');
+  console.log('🔧 Post-build signing fix for KeAgent macOS app');
 
-  const appPath = 'release/mac/KeClaw.app';
+  const appPath = 'release/mac/KeAgent.app';
   
   if (!existsSync(appPath)) {
     console.error(`❌ App not found at ${appPath}`);

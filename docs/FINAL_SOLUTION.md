@@ -66,7 +66,7 @@ bash scripts/fix-certificate.sh
 # 2. 设置环境变量
 export APPLE_ID=your_apple_id@example.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=your_password
 
 # 3. 构建
@@ -95,32 +95,32 @@ pnpm run package:mac
 [after-pack-resign] Removed 30 pre-existing signatures
 [after-pack-resign] electron-builder will sign all binaries with --deep flag
 
-  • signing         file=KeClaw.app identityName=Developer ID Application
-  • signing         file=KeClaw.app identityHash=CCC11593BF...
+  • signing         file=KeAgent.app identityName=Developer ID Application
+  • signing         file=KeAgent.app identityHash=CCC11593BF...
 
 [after-sign] Performing deep code signing...
 [after-sign] Using identity: Developer ID Application
 [after-sign] Running deep sign command...
 [after-sign] ✅ Deep signing completed successfully
 [after-sign] Verifying signature...
-KeClaw.app: valid on disk
-KeClaw.app: satisfies its Designated Requirement
+KeAgent.app: valid on disk
+KeAgent.app: satisfies its Designated Requirement
 [after-sign] ✅ Signature verification passed
 
-  • notarizing      file=KeClaw-0.3.0-alpha.0-mac-arm64.dmg
+  • notarizing      file=KeAgent-0.3.0-alpha.0-mac-arm64.dmg
 ```
 
 ## 验证签名
 
 ```bash
 # 方法 1: 使用验证脚本
-pnpm run verify:signatures release/mac-arm64/KeClaw.app
+pnpm run verify:signatures release/mac-arm64/KeAgent.app
 
 # 方法 2: 手动验证
-codesign --verify --deep --strict --verbose=2 release/mac-arm64/KeClaw.app
+codesign --verify --deep --strict --verbose=2 release/mac-arm64/KeAgent.app
 
 # 方法 3: 检查所有二进制文件
-find release/mac-arm64/KeClaw.app -name "*.node" -exec codesign -v {} \;
+find release/mac-arm64/KeAgent.app -name "*.node" -exec codesign -v {} \;
 ```
 
 ## 故障排查
@@ -145,7 +145,7 @@ security find-certificate -c "Developer ID Application" -p | \
   openssl x509 -text -noout | grep -A 2 "Validity"
 ```
 
-重新生成证书或更新 keclaw.p12 文件。
+重新生成证书或更新 keagent.p12 文件。
 
 ### 问题 3: 深度签名失败
 
@@ -222,7 +222,7 @@ bash scripts/build-dev.sh
 # 生产构建
 export APPLE_ID=your@email.com
 export APPLE_TEAM_ID=TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=password
 pnpm run package:mac
 
@@ -230,7 +230,7 @@ pnpm run package:mac
 bash scripts/fix-certificate.sh
 
 # 验证签名
-pnpm run verify:signatures release/mac-arm64/KeClaw.app
+pnpm run verify:signatures release/mac-arm64/KeAgent.app
 
 # 查看日志
 DEBUG=electron-builder pnpm run package:mac
@@ -244,15 +244,15 @@ DEBUG=electron-builder pnpm run package:mac
 ✅ [after-pack-resign] Removed N pre-existing signatures
 ✅ [after-sign] Deep signing completed successfully
 ✅ [after-sign] Signature verification passed
-✅ packaged KeClaw-0.3.0-alpha.0-mac-arm64.dmg
-✅ notarized KeClaw-0.3.0-alpha.0-mac-arm64.dmg (if notarization enabled)
+✅ packaged KeAgent-0.3.0-alpha.0-mac-arm64.dmg
+✅ notarized KeAgent-0.3.0-alpha.0-mac-arm64.dmg (if notarization enabled)
 ```
 
 验证：
 ```bash
-$ codesign -vvv --deep --strict release/mac-arm64/KeClaw.app
-KeClaw.app: valid on disk
-KeClaw.app: satisfies its Designated Requirement
+$ codesign -vvv --deep --strict release/mac-arm64/KeAgent.app
+KeAgent.app: valid on disk
+KeAgent.app: satisfies its Designated Requirement
 ```
 
 ## 立即测试
@@ -268,7 +268,7 @@ bash scripts/build-dev.sh
 bash scripts/fix-certificate.sh
 export APPLE_ID=your@email.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 pnpm run package:mac
 ```
 

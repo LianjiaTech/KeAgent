@@ -45,7 +45,7 @@ echo "创建新钥匙串..."
 security create-keychain -p "codesign123" /tmp/codesign-temp.keychain 2>/dev/null || true
 
 echo "导入证书到新钥匙串..."
-security import keclaw.p12 \
+security import keagent.p12 \
     -k /tmp/codesign-temp.keychain \
     -P wantt.564 \
     -T /usr/bin/codesign \
@@ -96,7 +96,7 @@ if [ "$METHOD5_SUCCESS" = true ]; then
     echo "  2. 然后手动签名:"
     echo "     codesign --force --deep --sign '$CERT_NAME' \\"
     echo "       --entitlements entitlements.mac.plist \\"
-    echo "       release/mac/KeClaw.app"
+    echo "       release/mac/KeAgent.app"
     exit 0
 fi
 

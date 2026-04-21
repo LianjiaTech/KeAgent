@@ -41,7 +41,7 @@ else
   echo "❌ 未找到 Developer ID Application 证书"
   echo ""
   echo "请先导入证书:"
-  echo "  security import keclaw.p12 -k login.keychain"
+  echo "  security import keagent.p12 -k login.keychain"
   exit 1
 fi
 

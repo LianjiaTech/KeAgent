@@ -16,7 +16,7 @@ echo "✅ Syntax check passed"
 # 设置测试环境变量（使用你的证书）
 export APPLE_ID=your_apple_id@example.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=your_password
 
 # 清理旧构建
@@ -30,20 +30,20 @@ pnpm run package:mac
 
 ```bash
 # 方法 1: 使用验证脚本
-pnpm run verify:signatures release/mac-arm64/KeClaw.app
+pnpm run verify:signatures release/mac-arm64/KeAgent.app
 
 # 方法 2: 手动验证
-codesign -vvv --deep --strict release/mac-arm64/KeClaw.app
+codesign -vvv --deep --strict release/mac-arm64/KeAgent.app
 ```
 
 ### 4. 检查二进制文件
 
 ```bash
 # 查看有多少二进制文件
-find release/mac-arm64/KeClaw.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) | wc -l
+find release/mac-arm64/KeAgent.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) | wc -l
 
 # 检查是否有未签名的文件
-find release/mac-arm64/KeClaw.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) -exec codesign -v {} \; 2>&1 | grep -v "valid on disk"
+find release/mac-arm64/KeAgent.app/Contents/Resources -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) -exec codesign -v {} \; 2>&1 | grep -v "valid on disk"
 ```
 
 ## 构建日志检查点
@@ -89,14 +89,14 @@ find release/mac-arm64/KeClaw.app/Contents/Resources -type f \( -name "*.node" -
 security find-identity -v -p codesigning
 
 # 导入证书
-security import keclaw.p12 -k ~/Library/Keychains/login.keychain
+security import keagent.p12 -k ~/Library/Keychains/login.keychain
 ```
 
 ### 问题 2: 某些文件仍未签名
 
 ```bash
 # 找出未签名的文件
-APP_PATH="release/mac-arm64/KeClaw.app"
+APP_PATH="release/mac-arm64/KeAgent.app"
 find "$APP_PATH/Contents/Resources" -type f \( -name "*.node" -o -name "*.dylib" \) | while read file; do
   if ! codesign -v "$file" 2>/dev/null; then
     echo "Unsigned: $file"
@@ -116,13 +116,13 @@ codesign --force --sign "Developer ID Application" \
 
 ```bash
 # 强制移除所有签名
-find release/mac-arm64/KeClaw.app -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) -exec codesign --remove-signature {} \; 2>/dev/null
+find release/mac-arm64/KeAgent.app -type f \( -name "*.node" -o -name "*.dylib" -o -name "*.so" \) -exec codesign --remove-signature {} \; 2>/dev/null
 
 # 重新深度签名整个应用
 codesign --force --deep --sign "Developer ID Application" \
   --entitlements entitlements.mac.plist \
   --timestamp --options runtime \
-  release/mac-arm64/KeClaw.app
+  release/mac-arm64/KeAgent.app
 ```
 
 ### 问题 4: 公证失败
@@ -171,7 +171,7 @@ echo "✅ Syntax OK"
 echo "3️⃣ 设置环境变量..."
 export APPLE_ID=your_apple_id@example.com
 export APPLE_TEAM_ID=YOUR_TEAM_ID
-export CSC_LINK=./keclaw.p12
+export CSC_LINK=./keagent.p12
 export CSC_KEY_PASSWORD=your_password
 
 # 4. 构建
@@ -180,11 +180,11 @@ pnpm run package:mac
 
 # 5. 验证
 echo "5️⃣ 验证签名..."
-bash scripts/verify-signatures.sh release/mac-arm64/KeClaw.app
+bash scripts/verify-signatures.sh release/mac-arm64/KeAgent.app
 
 # 6. 测试运行
 echo "6️⃣ 测试应用启动..."
-open release/mac-arm64/KeClaw.app
+open release/mac-arm64/KeAgent.app
 
 echo "✅ 测试完成！"
 ```
@@ -222,11 +222,11 @@ codesign -dvvv path/to/binary.node 2>&1 | grep Authority
 
 ```bash
 # Gatekeeper 评估（模拟用户首次打开）
-spctl --assess --verbose=4 --type execute KeClaw.app
+spctl --assess --verbose=4 --type execute KeAgent.app
 
 # 检查公证票据
-spctl --assess --verbose=4 --type install KeClaw.app
-stapler validate KeClaw.app
+spctl --assess --verbose=4 --type install KeAgent.app
+stapler validate KeAgent.app
 ```
 
 ### 监控构建过程
@@ -263,18 +263,18 @@ pnpm run package:mac
 
 ```bash
 # 1. 签名验证
-codesign -vvv --deep --strict KeClaw.app
-# 预期：KeClaw.app: valid on disk
+codesign -vvv --deep --strict KeAgent.app
+# 预期：KeAgent.app: valid on disk
 
 # 2. Gatekeeper 评估
-spctl --assess --verbose=4 KeClaw.app
-# 预期：KeClaw.app: accepted
+spctl --assess --verbose=4 KeAgent.app
+# 预期：KeAgent.app: accepted
 
 # 3. 二进制计数
-find KeClaw.app -name "*.node" -o -name "*.dylib" | wc -l
+find KeAgent.app -name "*.node" -o -name "*.dylib" | wc -l
 # 预期：> 0（不应该被删除）
 
 # 4. 全部已签名
-find KeClaw.app -type f \( -name "*.node" -o -name "*.dylib" \) -exec codesign -v {} \; 2>&1 | grep -c "valid on disk"
+find KeAgent.app -type f \( -name "*.node" -o -name "*.dylib" \) -exec codesign -v {} \; 2>&1 | grep -c "valid on disk"
 # 预期：等于二进制文件总数
 ```

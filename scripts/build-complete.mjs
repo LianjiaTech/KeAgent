@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 /**
- * KeClaw comprehensive macOS build and signing script
+ * KeAgent comprehensive macOS build and signing script
  * This script handles the build process and applies fixes when standard signing fails
  */
 
@@ -8,7 +8,7 @@ const { $, fs } = require('zx');
 const { existsSync } = require('fs');
 
 async function main() {
-  console.log('🚀 Starting KeClaw macOS build and signing process');
+  console.log('🚀 Starting KeAgent macOS build and signing process');
   console.log('📋 Configuration:');
   console.log(`   Apple ID: ${process.env.APPLE_ID || '(loaded from .env)'}`);
   console.log(`   Team ID: ${process.env.APPLE_TEAM_ID || '(loaded from .env)'}`);
@@ -22,7 +22,7 @@ async function main() {
       await $`rm -rf ./release/mac`;
     }
     
-    console.log('📦 Building KeClaw application...');
+    console.log('📦 Building KeAgent application...');
     
     // Run the standard build pipeline
     await $`pnpm run package && electron-builder --mac --publish never`;
@@ -51,7 +51,7 @@ async function main() {
   console.log('');
   console.log('🎉 Build process completed! Check the release/ directory for your app.');
   
-  const appPath = './release/mac/KeClaw.app';
+  const appPath = './release/mac/KeAgent.app';
   if (existsSync(appPath)) {
     console.log(`✅ Application is available at: ${appPath}`);
     console.log('');

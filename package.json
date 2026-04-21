@@ -1,5 +1,5 @@
 {
-    "name": "keclaw",
+    "name": "keagent",
     "version": "0.3.0",
     "pnpm": {
         "onlyBuiltDependencies": [
@@ -26,9 +26,9 @@
             ]
         }
     },
-    "description": "KeClaw - Graphical AI Assistant based on OpenClaw",
+    "description": "KeAgent - Graphical AI Assistant based on OpenClaw",
     "main": "dist-electron/main/index.js",
-    "author": "KeClaw Team",
+    "author": "KeAgent Team",
     "license": "MIT",
     "private": true,
     "scripts": {

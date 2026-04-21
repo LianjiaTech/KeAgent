@@ -13,7 +13,7 @@ import { EventEmitter } from 'events';
 import { setQuitting } from './app-state';
 
 /** Base update server URL (without trailing channel path) */
-const OSS_BASE_URL = 'http://ota_keclaw.xclaude.cn:8000';
+const OSS_BASE_URL = 'http://ota_keagent.xclaude.cn:8000';
 
 export interface UpdateStatus {
   status: 'idle' | 'checking' | 'available' | 'not-available' | 'downloading' | 'downloaded' | 'error';
