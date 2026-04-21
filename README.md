@@ -24,25 +24,22 @@
 
 ## 📋 Overview
 
-**KeAgent** is a desktop client for AI agents open-sourced by Beike Zhaofang. It serves as a bridge connecting powerful AI agents with everyday users. KeAgent transforms command-line AI orchestration into an easy-to-use, elegant desktop experience—no terminal required.
+**KeAgent** is a desktop client for AI agents open-sourced by Beike Zhaofang. It bridges powerful AI agents and everyday users, transforming command-line AI orchestration into an easy-to-use, elegant desktop experience—no terminal required.
 
-Whether it's automating workflows, integrating communication channels, or scheduling intelligent timed tasks, KeAgent provides an efficient and user-friendly graphical interface to help you unlock the full potential of AI agents.
-
-KeAgent comes with best-practice configurations for model providers, natively supports Windows and macOS platforms, and offers multi-language settings. You can also fine-tune advanced configurations through **Settings → Advanced → Developer Mode**.
+- 🖥️ **Zero-barrier onboarding** — Full GUI setup, no terminal needed
+- 🤖 **Multi-agent management** — Create and switch between agents with isolated workspaces
+- 📡 **Multi-channel integration** — Connect Telegram, WeChat, and more; bind each channel to a specific agent
+- ⏰ **Scheduled task automation** — Visual cron scheduler with external delivery support, 24/7 agent operation
+- 🧩 **Skill marketplace** — Browse, install, and manage extension skills without a package manager
+- 🔐 **Secure credential storage** — API keys stored in the OS native keychain; supports OpenAI, Anthropic, and more
+- 🌙 **Adaptive theme** — Light / dark mode or follow system preference automatically
+- 🌐 **Multi-language & proxy** — Native Windows / macOS support with built-in i18n and proxy settings
 
 ---
 
 ## 💬 WeChat Community
 
-<table>
-<tr>
-<td align="center" width="50%">
-  <strong>WeChat Group</strong><br>
-  <img src="https://img.linkerai.cn/file/b2e3749532d44dcf857164d247b91ab9.jpg" width="200"><br>
-  <small>Scan to join WeChat group</small>
-</td>
-</tr>
-</table>
+WeChat ID: **wantongtang** (add as friend to be invited to the group)
 
 
 ## 📸 Screenshots
