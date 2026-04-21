@@ -1,0 +1,97 @@
+<svg viewBox="0 0 1000 750" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','Courier New',Courier,monospace">
+  <style>
+    text { font-family: 'JetBrains Mono','Courier New',Courier,monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1000" height="750" fill="#020617"/>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="750" fill="url(#grid)"/>
+
+  <!-- ── ARROWS (z-order: behind boxes) ── -->
+  <!-- IPC: Electron Main → React Renderer -->
+  <line x1="500" y1="142" x2="500" y2="212" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Transport: Desktop App → Host API Proxy -->
+  <line x1="500" y1="335" x2="500" y2="413" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- WS/HTTP: Host API Proxy → Gateway -->
+  <line x1="500" y1="517" x2="500" y2="572" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── DESKTOP APP BOUNDARY (amber, dashed) y=18 h=317 ── -->
+  <rect x="20" y="18" width="960" height="317" rx="12"
+        fill="rgba(120,53,15,0.07)" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="8,4"/>
+  <text x="36" y="37" fill="#fbbf24" font-size="10" font-weight="600">KeAgent Desktop Application</text>
+
+  <!-- ── ELECTRON MAIN PROCESS (emerald) y=50 h=92 ── -->
+  <rect x="50" y="50" width="900" height="92" rx="6" fill="#0a1628"/>
+  <rect x="50" y="50" width="900" height="92" rx="6"
+        fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="500" y="75"  fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">Electron Main Process</text>
+  <text x="500" y="93"  fill="#94a3b8" font-size="9"  text-anchor="middle">Window &amp; application lifecycle management  •  Gateway process supervision</text>
+  <text x="500" y="108" fill="#94a3b8" font-size="9"  text-anchor="middle">System integration: tray, notifications, keychain</text>
+  <text x="500" y="123" fill="#34d399" font-size="8"  text-anchor="middle">Auto-update orchestration</text>
+
+  <!-- IPC pill -->
+  <rect x="348" y="158" width="304" height="22" rx="11" fill="rgba(15,23,42,0.95)" stroke="#475569" stroke-width="1"/>
+  <text x="500" y="173" fill="#94a3b8" font-size="8" text-anchor="middle">IPC — authoritative control plane</text>
+
+  <!-- ── REACT RENDERER PROCESS (cyan) y=216 h=92 ── -->
+  <rect x="50" y="216" width="900" height="92" rx="6" fill="#0a1628"/>
+  <rect x="50" y="216" width="900" height="92" rx="6"
+        fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="500" y="240" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">React Renderer Process</text>
+  <text x="500" y="258" fill="#94a3b8" font-size="9"  text-anchor="middle">React 19 component-based UI  •  Zustand state management</text>
+  <text x="500" y="273" fill="#94a3b8" font-size="9"  text-anchor="middle">Unified host-api / api-client calls</text>
+  <text x="500" y="288" fill="#22d3ee" font-size="8"  text-anchor="middle">Markdown rich text rendering</text>
+
+  <!-- Transport pill -->
+  <rect x="252" y="345" width="496" height="22" rx="11" fill="rgba(15,23,42,0.95)" stroke="#475569" stroke-width="1"/>
+  <text x="500" y="360" fill="#94a3b8" font-size="8" text-anchor="middle">Main process unified transport: WS preferred  →  HTTP secondary  →  IPC fallback</text>
+
+  <!-- ── HOST API &amp; PROXY LAYER (emerald) y=415 h=102 ── -->
+  <rect x="20" y="415" width="960" height="102" rx="6" fill="#0a1628"/>
+  <rect x="20" y="415" width="960" height="102" rx="6"
+        fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="500" y="440" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">Host API &amp; Main Process Proxy Layer</text>
+  <text x="500" y="458" fill="#94a3b8" font-size="9"  text-anchor="middle">hostapi:fetch — main process proxy, bypasses dev/prod CORS</text>
+  <text x="500" y="473" fill="#94a3b8" font-size="9"  text-anchor="middle">gateway:httpProxy — renderer does not directly connect to Gateway HTTP</text>
+  <text x="500" y="488" fill="#34d399" font-size="8"  text-anchor="middle">Unified error mapping &amp; retry / backoff strategies</text>
+
+  <!-- WS/HTTP pill -->
+  <rect x="375" y="529" width="250" height="22" rx="11" fill="rgba(15,23,42,0.95)" stroke="#475569" stroke-width="1"/>
+  <text x="500" y="544" fill="#94a3b8" font-size="8" text-anchor="middle">WS / HTTP / IPC fallback</text>
+
+  <!-- ── KEAGENT GATEWAY (slate) y=575 h=108 ── -->
+  <rect x="20" y="575" width="960" height="108" rx="6" fill="#0a1628"/>
+  <rect x="20" y="575" width="960" height="108" rx="6"
+        fill="rgba(30,41,59,0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="500" y="600" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">KeAgent Gateway</text>
+  <text x="500" y="618" fill="#94a3b8" font-size="9"  text-anchor="middle">AI agent runtime &amp; orchestration  •  Message channel management</text>
+  <text x="500" y="633" fill="#94a3b8" font-size="9"  text-anchor="middle">Skill / plugin execution environment</text>
+  <text x="500" y="648" fill="#94a3b8" font-size="8"  text-anchor="middle">Provider abstraction layer</text>
+
+  <!-- ── LEGEND ── -->
+  <text x="50" y="703" fill="#ffffff" font-size="10" font-weight="600">Legend</text>
+
+  <rect x="50"  y="715" width="14" height="10" rx="2" fill="rgba(6,78,59,0.4)"  stroke="#34d399" stroke-width="1"/>
+  <text x="70"  y="723" fill="#94a3b8" font-size="8">Main Process / Backend</text>
+
+  <rect x="210" y="715" width="14" height="10" rx="2" fill="rgba(8,51,68,0.4)"  stroke="#22d3ee" stroke-width="1"/>
+  <text x="230" y="723" fill="#94a3b8" font-size="8">Renderer / Frontend</text>
+
+  <rect x="360" y="715" width="14" height="10" rx="2" fill="rgba(30,41,59,0.5)" stroke="#94a3b8" stroke-width="1"/>
+  <text x="380" y="723" fill="#94a3b8" font-size="8">Gateway / External</text>
+
+  <rect x="500" y="713" width="16" height="14" rx="4"
+        fill="rgba(120,53,15,0.07)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="522" y="723" fill="#94a3b8" font-size="8">App Boundary</text>
+
+  <line x1="640" y1="720" x2="656" y2="720" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="662" y="723" fill="#94a3b8" font-size="8">IPC / Transport</text>
+</svg>

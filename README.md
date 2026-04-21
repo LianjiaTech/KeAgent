@@ -206,50 +206,7 @@ Notes:
 
 KeAgent adopts a **dual-process + Host API unified access architecture**. The renderer process only calls the unified client abstraction, while protocol selection and process lifecycle are uniformly managed by the Electron main process:
 
-```┌─────────────────────────────────────────────────────────────────┐
-│                        KeAgent Desktop Application                  │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │              Electron Main Process                           │  │
-│  │  • Window and application lifecycle management               │  │
-│  │  • Gateway process monitoring                                │  │
-│  │  • System integration (tray, notifications, keychain)        │  │
-│  │  • Auto-update orchestration                                 │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                              │                                    │
-│                              │ IPC (authoritative control plane)   │
-│                              ▼                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │              React Renderer Process                          │  │
-│  │  • Modern componentized UI (React 19)                        │  │
-│  │  • Zustand state management                                  │  │
-│  │  • Unified host-api/api-client calls                         │  │
-│  │  • Markdown rich text rendering                              │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               │ Main process unified transport strategy
-                               │ (WS preferred, HTTP secondary, IPC fallback)
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  Host API and Main Process Proxy Layer            │
-│                                                                  │
-│  • hostapi:fetch (main process proxy, bypasses dev/prod CORS)    │
-│  • gateway:httpProxy (renderer process doesn't directly connect to Gateway HTTP) │
-│  • Unified error mapping and retry/backoff strategies             │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                               │ WS / HTTP / IPC fallback
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     KeAgent Gateway                             │
-│                                                                  │
-│  • AI agent runtime and orchestration                            │
-│  • Message channel management                                    │
-│  • Skill/plugin execution environment                            │
-│  • Provider abstraction layer                                    │
-└─────────────────────────────────────────────────────────────────┘
-```
+<img src="resources/architecture-diagram.svg" alt="KeAgent Architecture Diagram" width="100%"/>
 
 ### Design Principles
 
