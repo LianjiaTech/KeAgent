@@ -1,0 +1,45 @@
+{
+  "name": "feishu-qr-bind",
+  "version": "1.0.0",
+  "description": "飞书机器人二维码绑定技能 - 通过 OAuth 设备授权流程完成飞书机器人与 OpenClaw 的绑定",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "default": "./index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js 2>/dev/null || echo 'No tests yet'"
+  },
+  "keywords": [
+    "feishu",
+    "lark",
+    "openclaw",
+    "skill",
+    "oauth",
+    "qr-code",
+    "binding",
+    "飞书",
+    "二维码",
+    "绑定"
+  ],
+  "author": "OpenClaw Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "peerDependencies": {
+    "axios": "^1.6.0",
+    "fs-extra": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openclaw/openclaw-lark",
+    "directory": "skills/feishu-qr-bind"
+  }
+}

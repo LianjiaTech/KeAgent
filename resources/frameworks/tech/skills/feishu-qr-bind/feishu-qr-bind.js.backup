@@ -1,0 +1,711 @@
+/**
+ * 飞书机器人二维码绑定工具
+ * 
+ * 实现飞书 OAuth 2.0 设备授权流程：
+ * 1. 初始化授权会话
+ * 2. 获取 device_code 和二维码 URL
+ * 3. 生成 PNG 二维码图片
+ * 4. 轮询授权状态
+ * 5. 获取 appId/appSecret 并保存配置
+ */
+
+import axios from 'axios';
+import QRCode from 'qrcode';
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { homedir } from 'os';
+
+// 获取当前文件所在目录
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 飞书 OAuth API 基础 URL
+const FEISHU_OAUTH_BASE = 'https://accounts.feishu.cn';
+const LARK_OAUTH_BASE = 'https://accounts.larksuite.com';
+
+// 配置
+const CONFIG = {
+  pollInterval: 3000, // 轮询间隔（毫秒）
+  defaultTimeout: 300, // 默认超时（秒）
+  qrSize: 512, // 二维码尺寸
+  qrDir: '/tmp/openclaw' // 二维码保存目录
+};
+
+/**
+ * 获取飞书 OAuth 基础 URL
+ * @param {string} domain - 域名类型 (feishu | lark)
+ * @returns {string} OAuth 基础 URL
+ */
+function getOAuthBase(domain) {
+  return domain === 'lark' ? LARK_OAUTH_BASE : FEISHU_OAUTH_BASE;
+}
+
+/**
+ * 读取 OpenClaw 配置文件
+ * @returns {Promise<object>} 配置对象
+ */
+async function readConfig() {
+  const jsonConfigPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const yamlConfigPath = path.join(homedir(), '.openclaw', 'config.yaml');
+  
+  // 优先读取 openclaw.json（新格式）
+  try {
+    if (await fs.pathExists(jsonConfigPath)) {
+      const jsonContent = await fs.readFile(jsonConfigPath, 'utf-8');
+      const jsonConfig = JSON.parse(jsonContent);
+      
+      // 从 openclaw.json 提取飞书配置（在 channels.feishu 下）
+      const feishuConfig = jsonConfig.channels?.feishu;
+      if (feishuConfig && feishuConfig.accounts) {
+        const defaultAccount = feishuConfig.defaultAccount || Object.keys(feishuConfig.accounts)[0];
+        const account = feishuConfig.accounts[defaultAccount];
+        
+        if (account) {
+          return {
+            channels: {
+              feishu: {
+                appId: account.appId,
+                appSecret: account.appSecret,
+                domain: account.domain || 'feishu',
+              }
+            }
+          };
+        }
+      }
+    }
+  } catch (err) {
+    console.log('[feishu-qr-bind] 读取 openclaw.json 失败:', err.message);
+  }
+  
+  // 回退到 config.yaml（旧格式）
+  try {
+    if (await fs.pathExists(yamlConfigPath)) {
+      const content = await fs.readFile(yamlConfigPath, 'utf-8');
+      const config = { channels: { feishu: {} } };
+      const lines = content.split('\n');
+      let inFeishuSection = false;
+      
+      for (const line of lines) {
+        if (line.match(/^\s*feishu:\s*$/)) {
+          inFeishuSection = true;
+          continue;
+        }
+        if (inFeishuSection) {
+          if (line.match(/^\s*\w+:\s*/)) {
+            const match = line.match(/^\s*(\w+):\s*(.+?)\s*$/);
+            if (match) {
+              const [, key, value] = match;
+              config.channels.feishu[key] = value.replace(/['"]/g, '');
+            }
+          } else if (line.match(/^\s*\w/)) {
+            inFeishuSection = false;
+          }
+        }
+      }
+      
+      return config;
+    }
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      console.log('[feishu-qr-bind] 读取 config.yaml 失败:', err.message);
+    }
+  }
+  
+  return { channels: { feishu: {} } };
+}
+
+/**
+ * 保存配置到文件
+ * @param {object} config - 配置对象
+ * @param {string} appId - App ID
+ * @param {string} appSecret - App Secret
+ */
+async function saveConfig(config, appId, appSecret) {
+  const jsonConfigPath = path.join(homedir(), '.openclaw', 'openclaw.json');
+  const yamlConfigPath = path.join(homedir(), '.openclaw', 'config.yaml');
+  
+  // 优先保存到 openclaw.json
+  try {
+    if (await fs.pathExists(jsonConfigPath)) {
+      const jsonContent = await fs.readFile(jsonConfigPath, 'utf-8');
+      const jsonConfig = JSON.parse(jsonContent);
+      
+      // 备份原配置
+      const backupPath = `${jsonConfigPath}.backup.${Date.now()}`;
+      await fs.writeFile(backupPath, jsonContent);
+      
+      // 更新飞书配置（在 channels.feishu 下）
+      if (!jsonConfig.channels) {
+        jsonConfig.channels = {};
+      }
+      if (!jsonConfig.channels.feishu) {
+        jsonConfig.channels.feishu = { defaultAccount: 'main', accounts: {} };
+      }
+      
+      const accountName = jsonConfig.channels.feishu.defaultAccount || 'main';
+      if (!jsonConfig.channels.feishu.accounts) {
+        jsonConfig.channels.feishu.accounts = {};
+      }
+      
+      // 保留现有配置，只更新 appId/appSecret
+      jsonConfig.channels.feishu.accounts[accountName] = {
+        ...jsonConfig.channels.feishu.accounts[accountName],
+        appId: appId,
+        appSecret: appSecret,
+        domain: config.channels?.feishu?.domain || 'feishu',
+      };
+      
+      await fs.writeFile(jsonConfigPath, JSON.stringify(jsonConfig, null, 2), 'utf-8');
+      console.log('[feishu-qr-bind] 配置已保存到 openclaw.json');
+      return;
+    }
+  } catch (err) {
+    console.log('[feishu-qr-bind] 保存 openclaw.json 失败:', err.message);
+  }
+  
+  // 回退到 config.yaml
+  try {
+    let content = '';
+    
+    if (await fs.pathExists(yamlConfigPath)) {
+      content = await fs.readFile(yamlConfigPath, 'utf-8');
+    }
+    
+    // 备份原配置
+    if (content) {
+      const backupPath = `${yamlConfigPath}.backup.${Date.now()}`;
+      await fs.writeFile(backupPath, content);
+    }
+    
+    // 检查是否已有 feishu 配置段
+    const hasFeishuSection = content.match(/^\s*feishu:\s*$/m);
+    
+    if (!hasFeishuSection) {
+      // 追加 feishu 配置段
+      const feishuConfig = `\nfeishu:\n  appId: '${appId}'\n  appSecret: '${appSecret}'\n  domain: '${config.channels?.feishu?.domain || 'feishu'}'\n`;
+      content += feishuConfig;
+    } else {
+      // 更新现有配置
+      const lines = content.split('\n');
+      const newLines = [];
+      let inFeishuSection = false;
+      let updated = false;
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        if (line.match(/^\s*feishu:\s*$/)) {
+          inFeishuSection = true;
+          newLines.push(line);
+          continue;
+        }
+        
+        if (inFeishuSection) {
+          if (line.match(/^\s*appId:\s*/)) {
+            newLines.push(`  appId: '${appId}'`);
+            updated = true;
+            continue;
+          }
+          if (line.match(/^\s*appSecret:\s*/)) {
+            newLines.push(`  appSecret: '${appSecret}'`);
+            updated = true;
+            continue;
+          }
+          if (line.match(/^\s*\w+:\s*/) && !line.match(/^\s*appId:\s*/) && !line.match(/^\s*appSecret:\s*/)) {
+            inFeishuSection = false;
+          }
+        }
+        
+        newLines.push(line);
+      }
+      
+      // 如果没有找到 appId/appSecret，添加它们
+      if (!updated) {
+        const feishuIndex = newLines.findIndex(l => l.match(/^\s*feishu:\s*$/));
+        if (feishuIndex !== -1) {
+          newLines.splice(feishuIndex + 1, 0, `  appId: '${appId}'`, `  appSecret: '${appSecret}'`);
+        }
+      }
+      
+      content = newLines.join('\n');
+    }
+    
+    await fs.writeFile(yamlConfigPath, content, 'utf-8');
+    console.log('[feishu-qr-bind] 配置已保存到 config.yaml');
+  } catch (err) {
+    throw new Error(`保存配置文件失败：${err.message}`);
+  }
+}
+
+/**
+ * 初始化 OAuth 授权会话
+ * @param {string} baseUrl - OAuth 基础 URL
+ * @returns {Promise<object>} 初始化结果
+ */
+async function initOAuth(baseUrl) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/oauth/v1/app/registration?action=init`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.error || err.message,
+    };
+  }
+}
+
+/**
+ * 开始授权流程，获取 device_code 和二维码 URL
+ * @param {string} baseUrl - OAuth 基础 URL
+ * @returns {Promise<object>} 授权开始结果
+ */
+async function beginOAuth(baseUrl) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/oauth/v1/app/registration?action=begin&archetype=PersonalAgent&auth_method=client_secret&request_user_info=open_id`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.error || err.message,
+    };
+  }
+}
+
+/**
+ * 轮询授权状态
+ * @param {string} baseUrl - OAuth 基础 URL
+ * @param {string} deviceCode - 设备授权码
+ * @returns {Promise<object>} 授权状态
+ */
+async function pollOAuth(baseUrl, deviceCode) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/oauth/v1/app/registration?action=poll&device_code=${deviceCode}`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.error || err.message,
+    };
+  }
+}
+
+/**
+ * 生成二维码图片
+ * @param {string} url - 二维码内容 URL
+ * @param {string} outputPath - 输出文件路径
+ * @returns {Promise<string>} 二维码文件路径
+ */
+async function generateQRCode(url, outputPath) {
+  try {
+    // 确保输出目录存在
+    await fs.ensureDir(path.dirname(outputPath));
+    
+    // 生成 PNG 二维码
+    await QRCode.toFile(outputPath, url, {
+      width: CONFIG.qrSize,
+      margin: 2,
+      errorCorrectionLevel: 'M',
+    });
+    
+    return outputPath;
+  } catch (err) {
+    throw new Error(`生成二维码失败：${err.message}`);
+  }
+}
+
+/**
+ * 等待用户扫码授权
+ * @param {string} baseUrl - OAuth 基础 URL
+ * @param {string} deviceCode - 设备授权码
+ * @param {number} timeout - 超时时间（秒）
+ * @returns {Promise<object>} 授权结果
+ */
+async function waitForAuthorization(baseUrl, deviceCode, timeout) {
+  const startTime = Date.now();
+  const timeoutMs = timeout * 1000;
+  
+  while (Date.now() - startTime < timeoutMs) {
+    const result = await pollOAuth(baseUrl, deviceCode);
+    
+    if (!result.success) {
+      // 轮询失败，继续等待
+      await new Promise(resolve => setTimeout(resolve, CONFIG.pollInterval));
+      continue;
+    }
+    
+    const status = result.data?.status;
+    
+    if (status === 'confirmed') {
+      // 用户已确认授权
+      return {
+        success: true,
+        status: 'confirmed',
+        appId: result.data?.app_id || result.data?.appId,
+        appSecret: result.data?.app_secret || result.data?.appSecret,
+      };
+    } else if (status === 'expired' || status === 'cancelled') {
+      // 授权过期或取消
+      return {
+        success: false,
+        status: status === 'cancelled' ? 'USER_CANCELLED' : 'EXPIRED',
+        error: status === 'cancelled' ? '用户取消了授权' : '授权已过期',
+      };
+    }
+    
+    // 继续轮询
+    await new Promise(resolve => setTimeout(resolve, CONFIG.pollInterval));
+  }
+  
+  // 超时
+  return {
+    success: false,
+    status: 'TIMEOUT',
+    error: `授权超时（${timeout}秒）`,
+  };
+}
+
+/**
+ * 通过飞书机器人发送图片消息
+ * @param {string} imagePath - 图片本地路径
+ * @param {string} userOpenId - 接收者 open_id
+ * @returns {Promise<object>} 发送结果
+ */
+async function sendImageToFeishu(imagePath, userOpenId) {
+  try {
+    // 读取配置获取 bot 凭证
+    const config = await readConfig();
+    const appId = config.channels?.feishu?.appId;
+    const appSecret = config.channels?.feishu?.appSecret;
+    
+    if (!appId || !appSecret) {
+      console.log('[feishu-qr-bind] 跳过图片发送：未配置飞书 bot 凭证');
+      return { success: false, error: 'NO_BOT_CREDENTIALS' };
+    }
+    
+    // 获取 tenant_access_token（使用应用凭证）
+    const tokenResponse = await axios.post(
+      'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal',
+      {
+        app_id: appId,
+        app_secret: appSecret,
+      },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    const tenantToken = tokenResponse.data?.tenant_access_token;
+    if (!tenantToken) {
+      console.log('[feishu-qr-bind] 跳过图片发送：获取 tenant token 失败');
+      return { success: false, error: 'GET_TOKEN_FAILED' };
+    }
+    
+    // 上传图片到飞书
+    const fs = await import('fs');
+    const imageBuffer = fs.readFileSync(imagePath);
+    
+    const uploadResponse = await axios.post(
+      'https://open.feishu.cn/open-apis/im/v1/images',
+      {
+        image_type: 'message',
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${tenantToken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        data: {
+          image: imageBuffer,
+        },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    const imageKey = uploadResponse.data?.data?.image_key;
+    if (!imageKey) {
+      console.log('[feishu-qr-bind] 跳过图片发送：上传图片失败');
+      return { success: false, error: 'UPLOAD_IMAGE_FAILED' };
+    }
+    
+    // 发送图片消息
+    const sendResponse = await axios.post(
+      'https://open.feishu.cn/open-apis/im/v1/messages',
+      {
+        receive_id: userOpenId,
+        msg_type: 'image',
+        content: JSON.stringify({ image_key: imageKey }),
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${tenantToken}`,
+          'Content-Type': 'application/json',
+        },
+        params: { receive_id_type: 'open_id' },
+        timeout: 10000,
+        proxy: false,
+      }
+    );
+    
+    console.log('[feishu-qr-bind] 图片消息发送成功');
+    return { success: true, message_id: sendResponse.data?.data?.message_id };
+    
+  } catch (err) {
+    console.log('[feishu-qr-bind] 图片消息发送失败:', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * 主函数：飞书二维码绑定
+ * @param {object} params - 参数对象
+ * @param {string} params.domain - 域名类型 (feishu | lark)
+ * @param {number} params.timeout - 超时时间（秒）
+ * @param {boolean} params.save_config - 是否保存配置
+ * @param {boolean} params.send_to_feishu - 是否通过飞书消息发送二维码给用户
+ * @param {string} params.user_open_id - 接收者 open_id（send_to_feishu=true 时需要）
+ * @returns {Promise<object>} 绑定结果
+ */
+export async function feishu_qr_bind(params = {}) {
+  const {
+    domain,
+    timeout = CONFIG.defaultTimeout,
+    save_config = true,
+    send_to_feishu = false,
+    user_open_id,
+  } = params;
+  
+  try {
+    // 1. 读取配置，确定域名
+    let oauthDomain = domain;
+    if (!oauthDomain) {
+      const config = await readConfig();
+      oauthDomain = config.channels?.feishu?.domain || 'feishu';
+    }
+    
+    const baseUrl = getOAuthBase(oauthDomain);
+    
+    // 2. 初始化 OAuth 会话
+    const initResult = await initOAuth(baseUrl);
+    if (!initResult.success) {
+      return {
+        success: false,
+        error: 'INIT_FAILED',
+        message: `初始化失败：${initResult.error}`,
+      };
+    }
+    
+    // 3. 开始授权流程，获取 device_code
+    const beginResult = await beginOAuth(baseUrl);
+    if (!beginResult.success) {
+      return {
+        success: false,
+        error: 'BEGIN_FAILED',
+        message: `获取授权码失败：${beginResult.error}`,
+      };
+    }
+    
+    const deviceCode = beginResult.data?.device_code;
+    const qrUrl = beginResult.data?.qr_url || beginResult.data?.verification_uri;
+    
+    if (!deviceCode) {
+      return {
+        success: false,
+        error: 'NO_DEVICE_CODE',
+        message: '未能获取设备授权码',
+      };
+    }
+    
+    // 4. 生成二维码图片
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15);
+    const qrFilename = `feishu_qr_${timestamp}.png`;
+    const qrPath = path.join(CONFIG.qrDir, qrFilename);
+    
+    await generateQRCode(qrUrl, qrPath);
+    
+    // 4a. 如果请求发送到飞书，上传图片并发送消息
+    let sentToFeishu = false;
+    let sendError = null;
+    
+    if (send_to_feishu) {
+      // 尝试获取当前用户的 open_id（从上下文或参数）
+      const targetOpenId = user_open_id;
+      
+      if (targetOpenId) {
+        const sendResult = await sendImageToFeishu(qrPath, targetOpenId);
+        sentToFeishu = sendResult.success;
+        if (!sendResult.success) {
+          sendError = sendResult.error;
+          console.log('[feishu-qr-bind] 发送飞书消息失败:', sendError);
+        }
+      } else {
+        console.log('[feishu-qr-bind] 跳过图片发送：未提供 user_open_id');
+        sendError = 'NO_USER_OPEN_ID';
+      }
+    }
+    
+    // 4b. 输出二维码信息，提示用户扫码
+    console.log('');
+    console.log('═══════════════════════════════════════════════════════════');
+    console.log('请扫描二维码完成授权');
+    console.log('');
+    console.log(`二维码路径：${qrPath}`);
+    console.log(`二维码 URL: ${qrUrl}`);
+    console.log('');
+    console.log('操作步骤：');
+    console.log('1. 打开飞书 App');
+    console.log('2. 扫描下方二维码，或访问二维码 URL');
+    console.log('3. 确认授权 OpenClaw 访问您的飞书账号');
+    console.log('');
+    console.log(`等待授权中...（超时时间：${timeout}秒）`);
+    console.log('═══════════════════════════════════════════════════════════');
+    console.log('');
+    
+    // 5. 等待用户扫码授权
+    const authResult = await waitForAuthorization(baseUrl, deviceCode, timeout);
+    
+    if (!authResult.success) {
+      return {
+        success: false,
+        error: authResult.status,
+        message: authResult.error,
+        qr_path: qrPath,
+        qr_url: qrUrl,
+        device_code: deviceCode,
+        send_to_feishu: send_to_feishu,
+        sent_to_feishu: sentToFeishu,
+        send_error: sendError,
+      };
+    }
+    
+    const { appId, appSecret } = authResult;
+    
+    if (!appId || !appSecret) {
+      return {
+        success: false,
+        error: 'NO_CREDENTIALS',
+        message: '未能获取应用凭证',
+        qr_path: qrPath,
+        qr_url: qrUrl,
+        device_code: deviceCode,
+        send_to_feishu: send_to_feishu,
+        sent_to_feishu: sentToFeishu,
+        send_error: sendError,
+      };
+    }
+    
+    // 6. 保存配置
+    if (save_config) {
+      const config = await readConfig();
+      config.channels = config.channels || {};
+      config.channels.feishu = config.channels.feishu || {};
+      config.channels.feishu.domain = oauthDomain;
+      
+      await saveConfig(config, appId, appSecret);
+    }
+    
+    // 7. 返回成功结果
+    return {
+      success: true,
+      qr_path: qrPath,
+      qr_url: qrUrl,
+      device_code: deviceCode,
+      app_id: appId,
+      app_secret: appSecret,
+      send_to_feishu: send_to_feishu,
+      sent_to_feishu: sentToFeishu,
+      send_error: sendError,
+      message: save_config 
+        ? '飞书机器人绑定成功，配置已保存' 
+        : '飞书机器人绑定成功',
+    };
+    
+  } catch (err) {
+    return {
+      success: false,
+      error: 'UNEXPECTED_ERROR',
+      message: `绑定失败：${err.message}`,
+    };
+  }
+}
+
+// 导出为 MCP 工具
+export const tool = {
+  name: 'feishu_qr_bind',
+  description: '飞书机器人二维码绑定工具，通过 OAuth 设备授权流程完成绑定。支持生成二维码后自动通过飞书消息发送给用户。',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      domain: {
+        type: 'string',
+        description: '飞书域名 (feishu | lark)',
+        enum: ['feishu', 'lark'],
+      },
+      timeout: {
+        type: 'number',
+        description: '轮询超时时间（秒）',
+        default: 300,
+      },
+      save_config: {
+        type: 'boolean',
+        description: '是否自动保存配置',
+        default: true,
+      },
+      send_to_feishu: {
+        type: 'boolean',
+        description: '是否通过飞书消息发送二维码图片给用户',
+        default: false,
+      },
+      user_open_id: {
+        type: 'string',
+        description: '接收者的飞书 open_id（send_to_feishu=true 时需要）',
+      },
+    },
+  },
+  handler: feishu_qr_bind,
+};

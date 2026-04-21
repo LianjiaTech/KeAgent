@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "defaults": {
+    "provider": "tavily",
+    "max_results": 10
+  },
+  "auto_routing": {
+    "enabled": true,
+    "fallback_provider": "exa",
+    "provider_priority": [
+      "tavily",
+      "querit",
+      "exa",
+      "searxng"
+    ],
+    "disabled_providers": ["serper"],
+    "confidence_threshold": 0.3
+  },
+  "tavily": {
+    "api_key": "${TAVILY_API_KEY}",
+    "depth": "advanced",
+    "max_results": 10
+  },
+  "querit": {
+    "api_key": "${QUERIT_API_KEY}",
+    "max_results": 10
+  },
+  "exa": {
+    "api_key": "${EXA_API_KEY}",
+    "type": "neural",
+    "max_results": 10
+  },
+  "searxng": {
+    "instance_url": "http://127.0.0.1:8080",
+    "engines": ["google", "bing", "duckduckgo"],
+    "max_results": 10
+  }
+}

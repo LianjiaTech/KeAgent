@@ -1,0 +1,269 @@
+---
+name: feishu-qr-bind
+description: |
+  飞书机器人二维码绑定工具。通过 OAuth 设备授权流程生成二维码图片，完成飞书机器人与 OpenClaw 的绑定。
+  支持生成 PNG 格式二维码、轮询授权状态、自动保存 appId/appSecret 到配置。
+  支持在生成二维码后自动通过飞书消息发送给用户。
+---
+
+# feishu_qr_bind
+
+飞书机器人二维码绑定技能。实现完整的 OAuth 设备授权流程，生成可扫描的二维码图片，引导用户完成飞书机器人与 OpenClaw 的绑定。
+
+## 工作原理
+
+基于飞书 OAuth 2.0 设备授权流程：
+
+1. **初始化** - POST `/oauth/v1/app/registration?action=init`
+2. **获取二维码** - POST `/oauth/v1/app/registration?action=begin&archetype=PersonalAgent&auth_method=client_secret&request_user_info=open_id`
+3. **轮询状态** - POST `/oauth/v1/app/registration?action=poll&device_code=xxx`
+4. **获取凭证** - 用户扫码确认后获取 appId/appSecret
+5. **保存配置** - 自动写入 OpenClaw 配置文件
+
+## 返回值
+
+工具成功执行后，返回一个 JSON 对象：
+
+```json
+{
+  "success": true,
+  "qr_path": "/tmp/openclaw/feishu_qr_20260320_143052.png",
+  "qr_url": "https://open.feishu.cn/oauth/v1/app/registration?device_code=xxx",
+  "device_code": "device_code_xxxxxxxxxxxx",
+  "app_id": "cli_xxxxxxxxxxxxxxxx",
+  "app_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "send_to_feishu": true,
+  "message": "飞书机器人绑定成功"
+}
+```
+
+**字段说明**：
+- `success`（boolean）：操作是否成功
+- `qr_path`（string）：本地二维码图片路径（PNG 格式）
+- `qr_url`（string）：飞书授权页面 URL（备用）
+- `device_code`（string）：设备授权码
+- `app_id`（string）：飞书应用 App ID（绑定成功后）
+- `app_secret`（string）：飞书应用 App Secret（绑定成功后）
+- `send_to_feishu`（boolean）：是否请求通过飞书消息发送二维码
+- `sent_to_feishu`（boolean）：是否成功发送到飞书（仅当 send_to_feishu=true 时）
+- `send_error`（string|null）：发送失败时的错误信息（可选）
+- `message`（string）：操作结果说明
+
+## 参数
+
+### domain（可选）
+飞书域名。默认根据配置自动选择。
+
+- `feishu` - 飞书中国（open.feishu.cn）
+- `lark` - 飞书国际（open.larksuite.com）
+
+如果不提供，工具会自动从当前飞书配置中读取。
+
+### timeout（可选）
+轮询超时时间（秒）。默认 300 秒（5 分钟）。
+
+用户需要在此时间内完成扫码确认。
+
+### save_config（可选）
+是否自动保存 appId/appSecret 到 OpenClaw 配置。默认 `true`。
+
+如果为 `false`，则只返回凭证，不修改配置。
+
+### send_to_feishu（可选）
+是否在生成二维码后自动通过飞书消息发送给用户。默认 `false`。
+
+当设置为 `true` 时，工具会在生成二维码图片后，调用飞书开放平台 API 将图片发送给指定用户。
+用户可以直接在飞书聊天中扫描二维码，无需手动查找图片文件。
+
+**注意**：
+- 此功能需要已配置飞书 bot 的 appId/appSecret
+- 发送失败不会影响主流程，只会在返回结果中标记
+- 需要配合 `user_open_id` 参数指定接收者
+
+### user_open_id（可选）
+接收者的飞书 open_id（格式：`ou_xxxxxxxxxxxx`）。当 `send_to_feishu=true` 时需要提供。
+
+如果不提供，工具会记录日志并跳过发送，但不影响绑定流程。
+
+## 使用流程
+
+### 1. 调用工具生成二维码
+
+```json
+{
+  "domain": "feishu"
+}
+```
+
+### 2. 扫描二维码
+
+工具会生成 PNG 二维码图片并返回路径。用户需要：
+- 在飞书中扫描二维码
+- 或访问返回的 `qr_url` 链接
+- 确认授权 OpenClaw 访问飞书
+
+### 3. 等待授权完成
+
+工具会自动轮询授权状态（每 3 秒一次），直到：
+- 用户确认授权（成功）
+- 超时（失败）
+- 用户取消（失败）
+
+### 4. 获取绑定结果
+
+授权成功后，工具自动：
+- 获取 appId 和 appSecret
+- 保存到 OpenClaw 配置（如果 `save_config=true`）
+- 返回绑定结果
+
+## 示例
+
+### 示例 1：标准绑定流程
+
+```json
+{}
+```
+
+返回：
+```json
+{
+  "success": true,
+  "qr_path": "/tmp/openclaw/feishu_qr_20260320_143052.png",
+  "qr_url": "https://open.feishu.cn/oauth/v1/app/registration?device_code=xxx",
+  "device_code": "device_code_xxx",
+  "app_id": "cli_xxxxxxxx",
+  "app_secret": "xxxxxxx",
+  "message": "飞书机器人绑定成功，配置已保存"
+}
+```
+
+### 示例 2：使用国际版飞书
+
+```json
+{
+  "domain": "lark",
+  "timeout": 600
+}
+```
+
+### 示例 3：仅获取凭证，不保存配置
+
+```json
+{
+  "save_config": false
+}
+```
+
+### 示例 4：生成二维码并自动发送到飞书
+
+```json
+{
+  "send_to_feishu": true,
+  "user_open_id": "ou_d6f374a3c5f7b1c0472ad5dd178e9441"
+}
+```
+
+返回结果：
+```json
+{
+  "success": true,
+  "send_to_feishu": true,
+  "sent_to_feishu": true,
+  "message": "飞书机器人绑定成功，配置已保存"
+}
+```
+
+如果发送失败，会包含 `send_error` 字段说明错误原因。
+
+## 错误处理
+
+### 常见错误
+
+**超时错误**：
+```json
+{
+  "success": false,
+  "error": "TIMEOUT",
+  "message": "授权超时，用户未在 300 秒内完成扫码"
+}
+```
+
+**用户取消**：
+```json
+{
+  "success": false,
+  "error": "USER_CANCELLED",
+  "message": "用户取消了授权"
+}
+```
+
+**网络错误**：
+```json
+{
+  "success": false,
+  "error": "NETWORK_ERROR",
+  "message": "网络请求失败：connection timeout"
+}
+```
+
+**配置错误**：
+```json
+{
+  "success": false,
+  "error": "CONFIG_ERROR",
+  "message": "无法读取 OpenClaw 配置文件"
+}
+```
+
+## 依赖
+
+- `qrcode` - 生成 PNG 二维码图片
+- `axios` - HTTP 请求（已包含在 @larksuiteoapi/node-sdk 中）
+- `fs-extra` - 文件系统操作（Node.js 内置）
+
+## 注意事项
+
+1. **二维码有效期**：飞书设备授权码有效期为 5 分钟，超时需重新生成
+2. **网络要求**：需要能访问 open.feishu.cn 或 open.larksuite.com
+3. **权限要求**：需要用户有飞书开放平台的应用创建权限
+4. **配置备份**：自动保存配置前会备份原配置文件
+5. **图片格式**：二维码为 PNG 格式，尺寸 512x512 像素
+6. **轮询间隔**：默认 3 秒轮询一次授权状态
+7. **安全提示**：appSecret 是敏感信息，请妥善保管
+8. **飞书消息发送**：
+   - `send_to_feishu=true` 时，图片会在生成后尝试发送到飞书
+   - 需要已配置飞书 bot 的 appId/appSecret
+   - 需要提供接收者的 `user_open_id`
+   - 发送失败不会影响绑定主流程，只记录日志并在返回结果中标记
+
+## 故障排查
+
+### 二维码无法扫描
+
+1. 检查网络连接
+2. 确认域名正确（feishu vs lark）
+3. 重新生成二维码
+
+### 授权失败
+
+1. 确认飞书账号有应用创建权限
+2. 检查是否在企业白名单内
+3. 查看飞书开放平台日志
+
+### 配置保存失败
+
+1. 检查配置文件权限
+2. 查看 ~/.openclaw/config.yaml 是否存在
+3. 手动保存返回的 appId/appSecret
+
+## 相关文件
+
+- 二维码保存路径：`/tmp/openclaw/feishu_qr_*.png`
+- 配置文件：`~/.openclaw/config.yaml`
+- 日志文件：`~/.openclaw/logs/openclaw.log`
+
+## 相关技能
+
+- `feishu-troubleshoot` - 飞书插件问题排查
+- `feishu-calendar` - 飞书日历管理
+- `feishu-bitable` - 飞书多维表格管理
