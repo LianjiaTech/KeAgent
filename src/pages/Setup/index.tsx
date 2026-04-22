@@ -450,7 +450,7 @@ function RuntimeContent({ onStatusChange }: RuntimeContentProps) {
   // Update canProceed when gateway status changes
   useEffect(() => {
     const allPassed = checks.nodejs.status === 'success'
-      && checks.keagent.status === 'success'
+      && checks.openclaw.status === 'success'
       && (checks.gateway.status === 'success' || gatewayStatus.state === 'running');
     onStatusChange(allPassed);
   }, [checks, gatewayStatus, onStatusChange]);
@@ -611,7 +611,7 @@ function RuntimeContent({ onStatusChange }: RuntimeContentProps) {
             )}
           </div>
           <div className="flex justify-end self-start mt-0.5">
-            {renderStatus(checks.keagent.status, checks.keagent.message)}
+            {renderStatus(checks.openclaw.status, checks.openclaw.message)}
           </div>
         </div>
         <div className="grid grid-cols-[1fr_auto] items-center gap-4 p-3 rounded-lg bg-muted/50">
@@ -629,7 +629,7 @@ function RuntimeContent({ onStatusChange }: RuntimeContentProps) {
         </div>
       </div>
 
-      {(checks.nodejs.status === 'error' || checks.keagent.status === 'error') && (
+      {(checks.nodejs.status === 'error' || checks.openclaw.status === 'error') && (
         <div className="mt-4 p-4 rounded-lg bg-red-900/20 border border-red-500/20">
           <div className="flex items-start gap-2">
             <AlertCircle className="h-5 w-5 text-red-400 mt-0.5" />
