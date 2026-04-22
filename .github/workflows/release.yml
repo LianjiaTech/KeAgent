@@ -343,7 +343,7 @@ jobs:
   #   releases/vX.Y.Z/ → permanent archive, never deleted
   # ──────────────────────────────────────────────────────────────
   upload-oss:
-    if: false  # OSS disabled — re-enable when OSS credentials are configured
+    if: ${{ secrets.OSS_ACCESS_KEY_ID != '' }}
     needs: release
     runs-on: ubuntu-latest
 
