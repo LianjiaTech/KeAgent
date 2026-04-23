@@ -22,11 +22,11 @@ export const PROVIDER_DEFINITIONS: ProviderDefinition[] = [
     defaultAuthMode: 'api_key',
     supportsMultipleAccounts: true,
     providerConfig: {
-      baseUrl: (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://local.linkerai.cn',
+      baseUrl: (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn',
       api: 'anthropic-messages',
       apiKeyEnv: 'XCLAUDE_API_KEY',
       headers: {
-        'HTTP-Referer': (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://local.linkerai.cn',
+        'HTTP-Referer': (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn',
         'X-Title': 'Xclaude',
       },
     },

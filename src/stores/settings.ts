@@ -72,7 +72,7 @@ interface SettingsState {
 // VITE_XCLAUDE_SERVER_URL is baked in at build time and always takes precedence
 // over any previously persisted value so that changing .env takes effect immediately.
 const XCLAUDE_SERVER_URL_FROM_ENV: string =
-  (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://local.linkerai.cn';
+  (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn';
 
 const defaultSettings = {
   theme: 'system' as Theme,

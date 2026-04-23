@@ -139,7 +139,7 @@ export const PROVIDER_TYPE_INFO: ProviderTypeInfo[] = [
     showModelId: true, 
     modelIdPlaceholder: 'anthropic/claude-sonnet-4.6', 
     defaultModelId: 'anthropic/claude-sonnet-4.6', 
-    docsUrl: (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://local.linkerai.cn'
+    docsUrl: (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn'
   },
   {
     id: 'anthropic',
