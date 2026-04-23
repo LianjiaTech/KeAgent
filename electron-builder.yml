@@ -1,4 +1,4 @@
-appId: app.clawx.desktop
+appId: app.keagent.desktop
 productName: KeAgent
 copyright: Copyright © 2026 KeAgent
 compression: maximum
@@ -162,7 +162,7 @@ linux:
       Comment: AI Assistant powered by OpenClaw
       Categories: Utility;Network;
       Keywords: ai;assistant;automation;chat;
-      StartupWMClass: clawx
+      StartupWMClass: KeAgent
 
 appImage:
   license: LICENSE
