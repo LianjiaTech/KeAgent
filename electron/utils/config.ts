@@ -36,11 +36,8 @@ export const APP_PATHS = {
   /** OpenClaw configuration directory */
   OPENCLAW_CONFIG: '~/.keagent',
 
-  /** ClawX configuration directory */
-  CLAWX_CONFIG: '~/.clawx',
-
   /** Log files directory */
-  LOGS: '~/.clawx/logs',
+  LOGS: '~/.keagent/logs',
 } as const;
 
 /**

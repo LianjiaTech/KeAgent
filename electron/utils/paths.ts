@@ -41,10 +41,10 @@ export function getOpenClawSkillsDir(): string {
 }
 
 /**
- * Get ClawX config directory
+ * Get KeAgent config directory (alias for getOpenClawConfigDir)
  */
 export function getClawXConfigDir(): string {
-  return join(homedir(), '.clawx');
+  return getOpenClawConfigDir();
 }
 
 /**
