@@ -127,7 +127,9 @@ function getCliTargetPath(): string {
 }
 
 export async function installOpenClawCli(): Promise<{
-  success: boolean; path?: string; error?: string;
+  success: boolean;
+  path?: string;
+  error?: string;
 }> {
   const platform = process.platform;
 
@@ -214,7 +216,7 @@ function ensureWindowsCliOnPath(): Promise<'updated' | 'already-present'> {
         env: process.env,
         stdio: ['ignore', 'pipe', 'pipe'],
         windowsHide: true,
-      },
+      }
     );
 
     let stdout = '';
@@ -282,9 +284,7 @@ function ensureLocalBinInPath(): void {
   }
 }
 
-export async function autoInstallCliIfNeeded(
-  notify?: (path: string) => void,
-): Promise<void> {
+export async function autoInstallCliIfNeeded(notify?: (path: string) => void): Promise<void> {
   if (!app.isPackaged) return;
   if (process.platform === 'win32') {
     try {
@@ -336,7 +336,7 @@ function getNodeExecForCli(): string {
       '../Frameworks',
       `${helperName}.app`,
       'Contents/MacOS',
-      helperName,
+      helperName
     );
     if (existsSync(helperPath)) return helperPath;
   }
@@ -385,21 +385,17 @@ export function installCompletionToProfile(): void {
 
   const execPath = getNodeExecForCli();
 
-  const child = spawn(
-    execPath,
-    [entryPath, 'completion', '--install', '-y'],
-    {
-      env: {
-        ...process.env,
-        ELECTRON_RUN_AS_NODE: '1',
-        OPENCLAW_NO_RESPAWN: '1',
-        OPENCLAW_EMBEDDED_IN: 'KeAgent',
-      },
-      stdio: 'ignore',
-      detached: false,
-      windowsHide: true,
-    }
-  );
+  const child = spawn(execPath, [entryPath, 'completion', '--install', '-y'], {
+    env: {
+      ...process.env,
+      ELECTRON_RUN_AS_NODE: '1',
+      OPENCLAW_NO_RESPAWN: '1',
+      OPENCLAW_EMBEDDED_IN: 'KeAgent',
+    },
+    stdio: 'ignore',
+    detached: false,
+    windowsHide: true,
+  });
 
   child.on('close', (code) => {
     if (code === 0) {

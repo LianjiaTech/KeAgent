@@ -22,11 +22,15 @@ export const PROVIDER_DEFINITIONS: ProviderDefinition[] = [
     defaultAuthMode: 'api_key',
     supportsMultipleAccounts: true,
     providerConfig: {
-      baseUrl: (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn',
+      baseUrl:
+        (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) ||
+        'https://keclaw.xclaude.cn',
       api: 'anthropic-messages',
       apiKeyEnv: 'XCLAUDE_API_KEY',
       headers: {
-        'HTTP-Referer': (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) || 'https://keclaw.xclaude.cn',
+        'HTTP-Referer':
+          (import.meta.env.VITE_XCLAUDE_SERVER_URL as string | undefined) ||
+          'https://keclaw.xclaude.cn',
         'X-Title': 'Xclaude',
       },
     },
@@ -283,18 +287,14 @@ export const PROVIDER_DEFINITIONS: ProviderDefinition[] = [
 ];
 
 const PROVIDER_DEFINITION_MAP = new Map(
-  PROVIDER_DEFINITIONS.map((definition) => [definition.id, definition]),
+  PROVIDER_DEFINITIONS.map((definition) => [definition.id, definition])
 );
 
-export function getProviderDefinition(
-  type: ProviderType | string,
-): ProviderDefinition | undefined {
+export function getProviderDefinition(type: ProviderType | string): ProviderDefinition | undefined {
   return PROVIDER_DEFINITION_MAP.get(type as ProviderType);
 }
 
-export function getProviderTypeInfo(
-  type: ProviderType,
-): ProviderTypeInfo | undefined {
+export function getProviderTypeInfo(type: ProviderType): ProviderTypeInfo | undefined {
   return getProviderDefinition(type);
 }
 
@@ -306,9 +306,7 @@ export function getProviderDefaultModel(type: string): string | undefined {
   return getProviderDefinition(type)?.defaultModelId;
 }
 
-export function getProviderBackendConfig(
-  type: string,
-): ProviderBackendConfig | undefined {
+export function getProviderBackendConfig(type: string): ProviderBackendConfig | undefined {
   return getProviderDefinition(type)?.providerConfig;
 }
 
@@ -318,6 +316,6 @@ export function getProviderUiInfoList(): ProviderTypeInfo[] {
 
 export function getKeyableProviderTypes(): string[] {
   return PROVIDER_DEFINITIONS.filter((definition) => definition.envVar).map(
-    (definition) => definition.id,
+    (definition) => definition.id
   );
 }
