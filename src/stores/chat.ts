@@ -1309,7 +1309,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     // NOTE: We intentionally do NOT call sessions.reset on the old session.
     // sessions.reset archives (renames) the session JSONL file, making old
     // conversation history inaccessible when the user switches back to it.
-    const { currentSessionKey, messages, sessions, sessionLastActivity, sessionLabels } = get();
+    const { currentSessionKey, messages, sessionLastActivity, sessionLabels } = get();
     // 仅将没有任何历史记录且无活动时间的会话视为空会话
     const leavingEmpty = !currentSessionKey.endsWith(':main')
       && messages.length === 0

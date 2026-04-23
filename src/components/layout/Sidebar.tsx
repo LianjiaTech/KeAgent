@@ -16,11 +16,9 @@ import {
   Plus,
   Trash2,
   Cpu,
-  Key,
   CreditCard,
   User,
   ChevronDown,
-  Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSettingsStore } from '@/stores/settings';
@@ -185,8 +183,6 @@ export function Sidebar() {
     () => Object.fromEntries((agents ?? []).map((agent) => [agent.id, agent.name])),
     [agents],
   );
-
-  const defaultAgent = useMemo(() => agents.find((a) => a.isDefault) || agents[0], [agents]);
 
   const handleNewChat = (agentId?: string) => {
     newSession(agentId);

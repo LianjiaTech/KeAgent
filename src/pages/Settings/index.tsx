@@ -76,9 +76,6 @@ export function Settings() {
     setAutoDownloadUpdate,
     devModeUnlocked,
     setDevModeUnlocked,
-    telemetryEnabled,
-    setTelemetryEnabled,
-    xclaudeServerUrl,
   } = useSettingsStore();
 
   const { status: gatewayStatus, restart: restartGateway } = useGatewayStore();
@@ -97,8 +94,6 @@ export function Settings() {
   const [wsDiagnosticEnabled, setWsDiagnosticEnabled] = useState(false);
   const [showTelemetryViewer, setShowTelemetryViewer] = useState(false);
   const [telemetryEntries, setTelemetryEntries] = useState<UiTelemetryEntry[]>([]);
-  const [xclaudeUrlDraft, setXclaudeUrlDraft] = useState(xclaudeServerUrl);
-
   const isWindows = window.electron.platform === 'win32';
   const showCliTools = true;
   const [showLogs, setShowLogs] = useState(false);
