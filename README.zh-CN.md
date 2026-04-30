@@ -364,6 +364,23 @@ CI 中的 `comms-regression` 会校验必选场景与阈值。
 
 ---
 
+## 👥 贡献人员
+
+感谢所有为 KeAgent 做出贡献的开发者！
+
+<table>
+<tr>
+  <td align="center"><a href="https://github.com/godjealous"><img src="https://github.com/godjealous.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>godjealous</b></sub></a></td>
+  <td align="center"><a href="https://github.com/Guo-T-W"><img src="https://github.com/Guo-T-W.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>Guo-T-W</b></sub></a></td>
+  <td align="center"><a href="https://github.com/KohsinChu"><img src="https://github.com/KohsinChu.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>KohsinChu</b></sub></a></td>
+  <td align="center"><a href="https://github.com/Thinkre"><img src="https://github.com/Thinkre.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>Thinkre</b></sub></a></td>
+  <td align="center"><a href="https://github.com/wantt"><img src="https://github.com/wantt.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>wantt</b></sub></a></td>
+  <td align="center"><a href="https://github.com/xiaoniantoua"><img src="https://github.com/xiaoniantoua.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>xiaoniantoua</b></sub></a></td>
+</tr>
+</table>
+
+---
+
 ## 🙏 致谢
 
 KeAgent 构建于以下优秀的开源项目之上：

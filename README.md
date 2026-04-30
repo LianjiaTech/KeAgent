@@ -367,6 +367,23 @@ Here are features currently under development:
 
 ---
 
+## 👥 Contributors
+
+Thanks to all the contributors who have helped make KeAgent better!
+
+<table>
+<tr>
+  <td align="center"><a href="https://github.com/godjealous"><img src="https://github.com/godjealous.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>godjealous</b></sub></a></td>
+  <td align="center"><a href="https://github.com/Guo-T-W"><img src="https://github.com/Guo-T-W.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>Guo-T-W</b></sub></a></td>
+  <td align="center"><a href="https://github.com/KohsinChu"><img src="https://github.com/KohsinChu.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>KohsinChu</b></sub></a></td>
+  <td align="center"><a href="https://github.com/Thinkre"><img src="https://github.com/Thinkre.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>Thinkre</b></sub></a></td>
+  <td align="center"><a href="https://github.com/wantt"><img src="https://github.com/wantt.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>wantt</b></sub></a></td>
+  <td align="center"><a href="https://github.com/xiaoniantoua"><img src="https://github.com/xiaoniantoua.png" width="64" height="64" style="border-radius:50%"/><br/><sub><b>xiaoniantoua</b></sub></a></td>
+</tr>
+</table>
+
+---
+
 ## 🙏 Acknowledgments
 
 KeAgent is built upon the following excellent open-source projects:
